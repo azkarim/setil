@@ -23,7 +23,8 @@ config :setil, SetilWeb.Endpoint,
   secret_key_base: "chIFUMgXf/JGJYglt8+pZ2c7oqpZo/SVHo8HHvZgajAPN4sVcpWyrwCGys48zRjH",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:setil, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:setil, ~w(--watch)]}
+    tailwind: {Tailwind, :install_and_run, [:setil, ~w(--watch)]},
+    node: ["./build.js", "--watch", cd: Path.expand("../assets/elm", __DIR__)]
   ]
 
 # ## SSL Support
