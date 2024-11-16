@@ -1,8 +1,28 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Html exposing (Html, text)
+import Browser
+import Browser.Navigation as Navigation
+import Msg exposing (Msg)
+import Page.Document
+import Route
+import State exposing (State)
+import Subscriptions
+import Update
+import Url exposing (Url)
 
 
-main : Html ()
+main : Program () State Msg
 main =
-    text "Hello Elm!"
+    Browser.application
+        { init = init
+        , view = Page.Document.document
+        , update = Update.update
+        , subscriptions = Subscriptions.subscriptions
+        , onUrlRequest = Route.onUrlRequest
+        , onUrlChange = Route.onUrlChange
+        }
+
+
+init : flags -> Url -> Navigation.Key -> ( State, Cmd Msg )
+init _ url _ =
+    ( State.init |> (\m -> { m | route = Route.toRoute url }), Cmd.none )
