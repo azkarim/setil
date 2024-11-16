@@ -20,9 +20,7 @@ defmodule Setil.SpamPrediction do
   @impl true
   def validate_changeset(changeset) do
     changeset
-    # Add this line
     |> cast(%{}, [:class, :reason, :score])
-    # Add this line
     |> validate_required([:class, :reason, :score])
     |> validate_inclusion(:class, ["spam", "not_spam"])
     |> validate_number(:score,

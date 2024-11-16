@@ -4,7 +4,6 @@ defmodule Setil.Instruct do
   def is_spam?(text) do
     Instructor.chat_completion(
       model: "gpt-4o-mini",
-      # model: "gpt-3.5-turbo",
       response_model: SpamPrediction,
       max_retries: 3,
       messages: [
