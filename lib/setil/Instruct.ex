@@ -1,35 +1,38 @@
 defmodule Setil.Instruct do
-  alias Setil.SpamPrediction
+  alias Setil.Passage
 
-  def is_spam?(text) do
+  def question(difficulty_level)
+      when is_integer(difficulty_level) and difficulty_level >= 1 and difficulty_level <= 10 do
+    min_words = 250
+    max_words = 300
+
     Instructor.chat_completion(
       model: "gpt-4o-mini",
-      response_model: SpamPrediction,
+      response_model: Passage,
       max_retries: 3,
       messages: [
         %{
           role: "system",
           content: """
-          You are a spam detection system for a clothing retail business.
-          Analyze customer support emails and classify them as spam or not spam.
-          Provide a confidence score between 0.0 and 1.0, and a brief reason (less than 10 words) for your classification.
+          You are an examiner for IELTS Reading module. You will set a question which is a passage. The passage is #{min_words}-#{max_words} words long. The user is asked to pair correct heading with the passage. You will provide 4 options as possible headings. Headings should be relevant enough as to hard to infer the correct one. User will provide difficulty level from 1 to 10, based on which wording of the passage and respective answer should be set.
           """
         },
         %{
           role: "user",
           content: """
-          Please classify this email:
-          ```
-          #{text}
-          ```
+          I'm ready for question. Difficulty level #{difficulty_level}.
 
           Return:
-          - class: must be exactly "spam" or "not_spam"
-          - score: a float between 0.0 and 1.0 indicating confidence
-          - reason: brief explanation (less than 10 words)
+          - passage: must be #{min_words}-#{max_words} words long
+          - options: 4 options as possible headings.
+          - answer: correct heading
           """
         }
       ]
     )
+  end
+
+  def question(_invalid_level) do
+    {:error, "Difficulty level must be an integer between 1 and 10"}
   end
 end

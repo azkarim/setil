@@ -1,0 +1,26 @@
+defmodule Setil.Passage do
+  use Ecto.Schema
+  use Instructor.Validator
+  import Ecto.Changeset
+
+  @doc """
+  ## Field Descriptions:
+  - passage: Passage question set by the examiner.
+  - options: 4 possible headings that may pair with the passage.
+  - answer: Correct heading.
+  """
+  @primary_key false
+  embedded_schema do
+    field(:passage, :string)
+    field(:options, {:array, :string})
+    field(:answer, :string)
+  end
+
+  @impl true
+  def validate_changeset(changeset) do
+    changeset
+    |> cast(%{}, [:passage, :options, :answer])
+    |> validate_required([:passage, :options, :answer])
+    |> validate_length(:options, is: 4, message: "must have exactly 4 options")
+  end
+end
