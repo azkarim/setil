@@ -12,6 +12,8 @@ defmodule Setil.Application do
       Setil.Repo,
       {DNSCluster, query: Application.get_env(:setil, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Setil.PubSub},
+      # Start the Finch HTTP client for sending emails
+      {Finch, name: Setil.Finch},
       # Start a worker by calling: Setil.Worker.start_link(arg)
       # {Setil.Worker, arg},
       # Start to serve requests, typically the last entry

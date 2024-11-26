@@ -1,5 +1,0 @@
-{
-  "devDependencies": {
-    "esbuild-plugin-elm": "^0.0.12"
-  }
-}

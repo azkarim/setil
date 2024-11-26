@@ -20,11 +20,10 @@ config :setil, SetilWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "chIFUMgXf/JGJYglt8+pZ2c7oqpZo/SVHo8HHvZgajAPN4sVcpWyrwCGys48zRjH",
+  secret_key_base: "i0qznSp9A6Nqe3uutRHUKy1hD42RUx3oo3qupGA8bo2aNtWCKODr1yg9lbdLxN/t",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:setil, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:setil, ~w(--watch)]},
-    node: ["./build.js", "--watch", cd: Path.expand("../assets/elm", __DIR__)]
+    tailwind: {Tailwind, :install_and_run, [:setil, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -77,3 +76,6 @@ config :phoenix_live_view,
   debug_heex_annotations: true,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
+
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false

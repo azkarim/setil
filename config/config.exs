@@ -20,7 +20,16 @@ config :setil, SetilWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Setil.PubSub,
-  live_view: [signing_salt: "mkruaj5F"]
+  live_view: [signing_salt: "13mvCfrT"]
+
+# Configures the mailer
+#
+# By default it uses the "Local" adapter which stores the emails
+# locally. You can see the emails in your browser, at "/dev/mailbox".
+#
+# For production it's recommended to configure a different adapter
+# at the `config/runtime.exs`.
+config :setil, Setil.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,

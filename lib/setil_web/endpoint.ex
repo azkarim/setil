@@ -7,7 +7,7 @@ defmodule SetilWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_setil_key",
-    signing_salt: "L9xr7bvD",
+    signing_salt: "y340+5nG",
     same_site: "Lax"
   ]
 
