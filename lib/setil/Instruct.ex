@@ -10,7 +10,7 @@ defmodule Setil.Instruct do
     Instructor.chat_completion(
       model: "gpt-4o-mini",
       response_model: Passage,
-      max_retries: 3,
+      # max_retries: 3,
       messages: [
         %{
           role: "system",
