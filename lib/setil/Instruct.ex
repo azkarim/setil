@@ -24,7 +24,7 @@ defmodule Setil.Instruct do
           I'm ready for question. Difficulty level #{difficulty_level}.
 
           Return:
-          - passage: must be #{min_words}-#{max_words} words long
+          - passage: An array of strings. Each paragraph forms a new element in the array. Passage must be #{min_words}-#{max_words} words long.
           - options: #{no_of_options} options as distractor headings. Should not contain the answer.
           - answer: the correct heading.
           """

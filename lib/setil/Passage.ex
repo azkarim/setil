@@ -13,7 +13,7 @@ defmodule Setil.Passage do
   """
   @primary_key false
   embedded_schema do
-    field(:passage, :string)
+    field(:passage, {:array, :string})
     field(:options, {:array, :string})
     field(:answer, :string)
   end
