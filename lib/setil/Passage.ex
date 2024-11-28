@@ -3,6 +3,8 @@ defmodule Setil.Passage do
   use Instructor.Validator
   import Ecto.Changeset
 
+  @no_of_options 3
+
   @doc """
   ## Field Descriptions:
   - passage: Passage question set by the examiner.
@@ -21,6 +23,6 @@ defmodule Setil.Passage do
     changeset
     |> cast(%{}, [:passage, :options, :answer])
     |> validate_required([:passage, :options, :answer])
-    |> validate_length(:options, is: 4, message: "must have exactly 4 options")
+    |> validate_length(:options, is: @no_of_options, message: "must have exactly 4 options")
   end
 end
