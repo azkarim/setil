@@ -1,3 +1,73 @@
-<div>
-  Match the correct heading for the passage.
+<div class="w-full max-h-[90vh]">
+  <div class="w-full h-auto flex justify-end">
+    <button
+      type="button"
+      class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+      phx-click="next-passage"
+      disabled={@loading}
+    >
+      Next passage
+      <svg
+        class="shrink-0 size-4"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 12h14"></path>
+        <path d="m12 5 7 7-7 7"></path>
+      </svg>
+    </button>
+  </div>
+  <%= if (@passage != []) do %>
+    <div class="w-full max-h-[80vh] flex">
+      <div class="w-8/12 overflow-y-scroll border-2 space-y-8 rounded-md px-4 py-4">
+        <%= for paragraph <- @passage do %>
+          <pre class="leading-relaxed whitespace-pre-line"><%= paragraph %></pre>
+        <% end %>
+      </div>
+      <div class="w-4/12 h-auto flex items-center justify-center">
+        <div class="grid space-y-2">
+          <%= for {option, index} <- Enum.with_index(@options) do %>
+            <label
+              for={"option-#{index}"}
+              class={"max-w-lg flex p-3 w-full border rounded-lg cursor-pointer text-sm #{label_class_when_option_selected(@selected_option, option, @answer)}"}
+            >
+              <input
+                type="radio"
+                name="heading-choice"
+                value={option}
+                checked={@selected_option == option}
+                class={"shrink-0 mt-0.5 rounded-full disabled:opacity-50 disabled:pointer-events-none #{input_class_when_option_selected(@selected_option, option, @answer)}"}
+                id={"option-#{index}"}
+                phx-click="select_option"
+                phx-value-option={option}
+              />
+              <span class="text-sm ms-3"><%= option %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="w-full h-[80vh] flex justify-center items-center">
+      <button
+        type="button"
+        class="flex justify-center items-center size-[46px] text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+      >
+        <span
+          class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+          role="status"
+          aria-label="loading"
+        >
+          <span class="sr-only">Loading...</span>
+        </span>
+      </button>
+    </div>
+  <% end %>
 </div>
