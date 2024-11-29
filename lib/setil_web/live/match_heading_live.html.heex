@@ -1,4 +1,4 @@
-<div class="w-full max-h-[90vh]">
+<div class="w-full max-h-[90vh]" id="confetti-container" phx-hook="Confetti">
   <div class="w-full h-auto flex justify-end">
     <button
       type="button"
@@ -25,7 +25,7 @@
     </button>
   </div>
   <%= if (@passage != []) do %>
-    <div class="w-full max-h-[80vh] flex">
+    <div class="w-full max-h-[80vh] flex space-x-8">
       <div class="w-8/12 overflow-y-scroll border-2 space-y-8 rounded-md px-4 py-4">
         <%= for paragraph <- @passage do %>
           <pre class="leading-relaxed whitespace-pre-line"><%= paragraph %></pre>

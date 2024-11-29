@@ -31,6 +31,7 @@ defmodule Setil.Instruct do
         }
       ]
     )
+    |> IO.inspect()
   end
 
   def question(_invalid_level) do

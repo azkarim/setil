@@ -13,7 +13,16 @@ defmodule SetilWeb.MatchHeadingLive do
   end
 
   def handle_event("select_option", %{"option" => selected_option}, socket) do
-    {:noreply, assign(socket, :selected_option, selected_option)}
+    socket = assign(socket, :selected_option, selected_option)
+
+    socket =
+      if selected_option == socket.assigns.answer do
+        send_confetti(socket)
+      else
+        socket
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("next-passage", _params, socket) do
@@ -88,5 +97,9 @@ defmodule SetilWeb.MatchHeadingLive do
     else
       "text-gray-500 bg-white border-gray-200  focus:border-blue-500 focus:ring-blue-500"
     end
+  end
+
+  defp send_confetti(socket, type \\ "celebration") do
+    push_event(socket, "trigger-confetti", %{type: type})
   end
 end
