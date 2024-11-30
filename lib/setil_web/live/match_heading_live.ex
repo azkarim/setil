@@ -26,14 +26,15 @@ defmodule SetilWeb.MatchHeadingLive do
   end
 
   def handle_event("next-passage", _params, socket) do
-    Task.async(fn -> fetch_question() end)
+    parent = self()
+    # Warning : Process may become zombie and currently
+    # there is no way to detect that and kill it!
+    spawn(fn -> fetch_question(parent) end)
 
     {:noreply, assign(socket, loading: true, passage: [])}
   end
 
-  def handle_info({ref, {:ok, %Passage{} = question}}, socket) when is_reference(ref) do
-    Process.demonitor(ref, [:flush])
-
+  def handle_info({:fetched_question, %Passage{} = question}, socket) do
     socket =
       socket
       |> assign(:loading, false)
@@ -45,27 +46,22 @@ defmodule SetilWeb.MatchHeadingLive do
     {:noreply, socket}
   end
 
-  def handle_info({ref, nil}, socket) when is_reference(ref) do
-    Process.demonitor(ref, [:flush])
-
+  def handle_info(:error_fetching_question, socket) do
     socket =
       socket
       |> assign(:loading, false)
       |> assign(:passage, [])
+      |> put_flash(:error, "Error fetching question. Try again!")
 
     {:noreply, socket}
   end
 
-  def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket) do
-    {:noreply, assign(socket, loading: false, error: "Failed to fetch question")}
-  end
-
-  def fetch_question() do
+  def fetch_question(parent) do
     with {:ok, result} <- Instruct.question(10) do
-      {:ok, result}
+      send(parent, {:fetched_question, result})
     else
       _ ->
-        nil
+        send(parent, :error_fetching_question)
     end
   end
 
