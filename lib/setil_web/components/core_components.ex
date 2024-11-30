@@ -668,4 +668,72 @@ defmodule SetilWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
+
+  attr :min, :integer, required: true
+  attr :max, :integer, required: true
+  attr :step, :integer, default: 1
+  attr :value, :integer, default: nil
+  attr :disabled, :boolean, default: false
+  attr :class, :string, default: ""
+  attr :id, :string, default: nil
+  attr :label, :string, default: "Range slider"
+
+  def range_step_slider(assigns) do
+    assigns = assign_new(assigns, :id, fn -> "range-#{System.unique_integer()}" end)
+
+    ~H"""
+    <div class={@class}>
+      <div class="w-full">
+        <label for={@id} class="sr-only"><%= @label %></label>
+        <input
+          type="range"
+          value={@value}
+          disabled={@disabled}
+          class="w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 disabled:pointer-events-none focus:outline-none
+            [&::-webkit-slider-thumb]:w-2.5
+            [&::-webkit-slider-thumb]:h-2.5
+            [&::-webkit-slider-thumb]:-mt-0.5
+            [&::-webkit-slider-thumb]:appearance-none
+            [&::-webkit-slider-thumb]:bg-white
+            [&::-webkit-slider-thumb]:shadow-[0_0_0_4px_rgba(37,99,235,1)]
+            [&::-webkit-slider-thumb]:rounded-full
+            [&::-webkit-slider-thumb]:transition-all
+            [&::-webkit-slider-thumb]:duration-150
+            [&::-webkit-slider-thumb]:ease-in-out
+
+            [&::-moz-range-thumb]:w-2.5
+            [&::-moz-range-thumb]:h-2.5
+            [&::-moz-range-thumb]:appearance-none
+            [&::-moz-range-thumb]:bg-white
+            [&::-moz-range-thumb]:border-4
+            [&::-moz-range-thumb]:border-blue-600
+            [&::-moz-range-thumb]:rounded-full
+            [&::-moz-range-thumb]:transition-all
+            [&::-moz-range-thumb]:duration-150
+            [&::-moz-range-thumb]:ease-in-out
+
+            [&::-webkit-slider-runnable-track]:w-full
+            [&::-webkit-slider-runnable-track]:h-2
+            [&::-webkit-slider-runnable-track]:bg-gray-100
+            [&::-webkit-slider-runnable-track]:rounded-full
+
+            [&::-moz-range-track]:w-full
+            [&::-moz-range-track]:h-2
+            [&::-moz-range-track]:bg-gray-100
+            [&::-moz-range-track]:rounded-full"
+          id={@id}
+          aria-orientation="horizontal"
+          min={@min}
+          max={@max}
+          step={@step}
+        />
+      </div>
+      <div class={"mt-2 w-full flex justify-between #{@disabled && "opacity-50"}"}>
+        <%= for i <- @min..@max//(@step) do %>
+          <span class="inline-block cursor-default select-none text-xs"><%= i %></span>
+        <% end %>
+      </div>
+    </div>
+    """
+  end
 end
