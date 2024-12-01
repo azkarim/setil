@@ -8,7 +8,7 @@ defmodule Setil.Passage do
   @doc """
   ## Field Descriptions:
   - passage: Passage question set by the examiner.
-  - options: 4 possible headings that may pair with the passage.
+  - options: @no_of_options possible headings that may pair with the passage.
   - answer: Correct heading.
   """
   @primary_key false
@@ -23,6 +23,9 @@ defmodule Setil.Passage do
     changeset
     |> cast(%{}, [:passage, :options, :answer])
     |> validate_required([:passage, :options, :answer])
-    |> validate_length(:options, is: @no_of_options, message: "must have exactly 4 options")
+    |> validate_length(:options,
+      is: @no_of_options,
+      message: "must have exactly #{@no_of_options} options"
+    )
   end
 end

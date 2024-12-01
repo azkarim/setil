@@ -15,18 +15,23 @@ defmodule Setil.Instruct do
         %{
           role: "system",
           content: """
-          You are an examiner for IELTS Reading module. You will set a question which is a passage. The passage is #{min_words}-#{max_words} words long. The user is asked to pair correct heading with the passage. You will provide #{no_of_options} options as distractor headings and correct heading as answer. Headings should be relevant enough as to hard to infer the correct one. User will provide difficulty level from 1 to 10, based on which wording of the passage and respective answer should be set.
+          You are an examiner for the IELTS Reading module. Your task is to create a passage and design a "Match the Heading" question. The passage should be between #{min_words} and #{max_words} words, with a difficulty level determined by the user (1 to 10). Based on the passage:
+
+          1. Provide one correct heading that accurately captures the main idea of the passage.
+          2. Create #{no_of_options} distractor headings derived from the content of the passage. These distractors must be relevant and plausible, making it challenging to distinguish the correct heading from the distractors.
+
+          The language, complexity, and vocabulary of the passage and headings should align with the specified difficulty level.
           """
         },
         %{
           role: "user",
           content: """
-          I'm ready for question. Difficulty level #{difficulty_level}.
+          I'm ready for a question. The difficulty level is #{difficulty_level}.
 
           Return:
           - passage: An array of strings. Each paragraph forms a new element in the array. Passage must be #{min_words}-#{max_words} words long.
-          - options: #{no_of_options} options as distractor headings. Should not contain the answer.
-          - answer: the correct heading.
+          - options: A list of #{no_of_options} distractor headings. These should be plausible and derived from the passage but must not include the correct answer.
+          - answer: The correct heading that best summarizes the passage.
           """
         }
       ]
