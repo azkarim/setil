@@ -1,37 +1,64 @@
 <div class="w-full max-h-[90vh]" id="confetti-container" phx-hook="Confetti">
-  <div class="w-full h-auto flex justify-end">
-    <button
-      type="button"
-      class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-      phx-click="next-passage"
-      disabled={@loading}
-    >
-      Next passage
-      <svg
-        class="shrink-0 size-4"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+  <div class="w-full flex justify-end space-x-8 items-center mb-8">
+    <div class="w-[520px] px-4 py-4">
+      <span class="text-gray-800 text-sm pb-2 inline-block">Words</span>
+      <.range_step_slider
+        min={250}
+        max={900}
+        value={350}
+        step={50}
+        disabled={@loading}
+        class="text-xs text-gray-800"
+      />
+    </div>
+
+    <div class="w-[520px] px-8 py-4">
+      <span class="text-gray-800 text-sm pb-2 inline-block">Difficulty</span>
+      <.range_step_slider
+        min={1}
+        max={10}
+        value={5}
+        step={1}
+        disabled={@loading}
+        class="text-xs text-gray-800"
+      />
+    </div>
+
+    <div>
+      <button
+        type="button"
+        class="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm gap-x-2 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+        phx-click="next-passage"
+        disabled={@loading}
       >
-        <path d="M5 12h14"></path>
-        <path d="m12 5 7 7-7 7"></path>
-      </svg>
-    </button>
+        Next passage
+        <svg
+          class="shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
   </div>
+
   <%= if (@passage != []) do %>
     <div class="w-full max-h-[80vh] flex space-x-8">
-      <div class="w-8/12 overflow-y-scroll border-2 space-y-8 rounded-md px-4 py-4">
+      <div class="w-8/12 px-4 py-4 space-y-8 overflow-y-scroll border-2 rounded-md">
         <%= for paragraph <- @passage do %>
           <pre class="leading-relaxed whitespace-pre-line"><%= paragraph %></pre>
         <% end %>
       </div>
-      <div class="w-4/12 h-auto flex items-center justify-center">
+      <div class="flex items-center justify-center w-4/12 h-auto">
         <div class="grid space-y-2">
           <%= for {option, index} <- Enum.with_index(@options) do %>
             <label

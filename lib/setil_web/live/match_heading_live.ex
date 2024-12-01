@@ -5,6 +5,10 @@ defmodule SetilWeb.MatchHeadingLive do
   alias Setil.Instruct
   alias Setil.Passage
 
+  # TODO :
+  # - Currently `max_retries == 0` for `Instruct`.
+  # UI state is not definded when it fails on its first attempt.
+
   def mount(_params, _session, socket) do
     initial_state =
       %{passage: [], loading: false}
