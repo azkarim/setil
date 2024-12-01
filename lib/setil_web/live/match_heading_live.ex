@@ -31,7 +31,7 @@ defmodule SetilWeb.MatchHeadingLive do
 
   def handle_event("next-passage", _params, socket) do
     parent = self()
-    # Warning : Process may become zombie and currently
+    # TODO : Process may become zombie and currently
     # there is no way to detect that and kill it!
     spawn(fn -> fetch_question(parent) end)
 
@@ -60,7 +60,7 @@ defmodule SetilWeb.MatchHeadingLive do
     {:noreply, socket}
   end
 
-  def fetch_question(parent) do
+  defp fetch_question(parent) do
     with {:ok, result} <- Instruct.question(10) do
       send(parent, {:fetched_question, result})
     else
@@ -71,11 +71,11 @@ defmodule SetilWeb.MatchHeadingLive do
 
   # Helpers
 
-  def get_shuffled_options(options, answer) do
+  defp get_shuffled_options(options, answer) do
     Enum.shuffle([answer | options])
   end
 
-  def input_class_when_option_selected(selected_option, option, answer) do
+  defp input_class_when_option_selected(selected_option, option, answer) do
     if selected_option == option do
       if option == answer do
         "text-green-600 border-green-200 focus:ring-green-500"
@@ -87,7 +87,7 @@ defmodule SetilWeb.MatchHeadingLive do
     end
   end
 
-  def label_class_when_option_selected(selected_option, option, answer) do
+  defp label_class_when_option_selected(selected_option, option, answer) do
     if selected_option == option do
       if option == answer do
         "text-white bg-green-500 border-green-200 focus:border-green-500 focus:ring-green-500"
