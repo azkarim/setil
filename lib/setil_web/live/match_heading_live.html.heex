@@ -1,8 +1,9 @@
-<div class="w-full max-h-[90vh]" id="confetti-container" phx-hook="Confetti">
-  <div class="w-full flex justify-end space-x-8 items-center mb-8">
-    <div class="w-[520px] px-4 py-4">
-      <span class="text-gray-800 text-sm pb-2 inline-block">Words</span>
+<div class="w-full max-w-6xl mx-auto space-y-8">
+  <!-- Controls -->
+  <div class="flex justify-between gap-8 mb-12">
+    <div class="flex-1 space-y-2">
       <.range_step_slider
+        label="Words"
         min={250}
         max={900}
         value={350}
@@ -12,9 +13,9 @@
       />
     </div>
 
-    <div class="w-[520px] px-8 py-4">
-      <span class="text-gray-800 text-sm pb-2 inline-block">Difficulty</span>
+    <div class="flex-1 space-y-2">
       <.range_step_slider
+        label="Difficulty"
         min={1}
         max={10}
         value={5}
@@ -24,77 +25,52 @@
       />
     </div>
 
-    <div>
-      <button
-        type="button"
-        class="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm gap-x-2 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-        phx-click="next-passage"
-        disabled={@loading}
+    <button
+      class="px-4 py-2 text-sm font-mono bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50 disabled:pointer-events-none"
+      ,
+      type="button"
+      phx-click="next-passage"
+      disabled={@loading}
+    >
+      Next passage
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="inline-block w-4 h-4 ml-1"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-        Next passage
-        <svg
-          class="shrink-0 size-4"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M5 12h14"></path>
-          <path d="m12 5 7 7-7 7"></path>
-        </svg>
-      </button>
-    </div>
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
   </div>
-
+  <!-- Content -->
   <%= if (@passage != []) do %>
-    <div class="w-full max-h-[80vh] flex space-x-8">
-      <div class="w-8/12 px-4 py-4 space-y-8 overflow-y-scroll border-2 rounded-md">
-        <%= for paragraph <- @passage do %>
-          <pre class="leading-relaxed whitespace-pre-line"><%= paragraph %></pre>
-        <% end %>
-      </div>
-      <div class="flex items-center justify-center w-4/12 h-auto">
-        <div class="grid space-y-2">
-          <%= for {option, index} <- Enum.with_index(@options) do %>
-            <label
-              for={"option-#{index}"}
-              class={"max-w-lg flex p-3 w-full border rounded-lg cursor-pointer text-sm #{label_class_when_option_selected(@selected_option, option, @answer)}"}
-            >
-              <input
-                type="radio"
-                name="heading-choice"
-                value={option}
-                checked={@selected_option == option}
-                class={"shrink-0 mt-0.5 rounded-full disabled:opacity-50 disabled:pointer-events-none #{input_class_when_option_selected(@selected_option, option, @answer)}"}
-                id={"option-#{index}"}
-                phx-click="select_option"
-                phx-value-option={option}
-              />
-              <span class="text-sm ms-3"><%= option %></span>
-            </label>
+    <div class="flex gap-8">
+      <div class="flex-1">
+        <div class="p-6 font-mono text-sm leading-relaxed bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] space-y-4">
+          <%= for paragraph <- @passage do %>
+            <p><%= paragraph %></p>
           <% end %>
         </div>
       </div>
+      <!-- Answers -->
+      <div class="w-72 space-y-2">
+        <%= for option <- @options do %>
+          <button
+            class={"w-full p-4 text-left text-sm font-mono border-2 border-black transition-all #{class_when_option_selected(@selected_option, option, @answer)}"}
+            phx-click="select_option"
+            phx-value-option={option}
+          >
+            <%= option %>
+          </button>
+        <% end %>
+      </div>
     </div>
   <% else %>
-    <div class="w-full h-[80vh] flex justify-center items-center">
-      <button
-        type="button"
-        class="flex justify-center items-center size-[46px] text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-      >
-        <span
-          class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
-          role="status"
-          aria-label="loading"
-        >
-          <span class="sr-only">Loading...</span>
-        </span>
-      </button>
-    </div>
+    <div>Loading</div>
   <% end %>
 </div>

@@ -70,5 +70,21 @@ Hooks.Confetti = {
   },
 };
 
+Hooks.RangeSlider = {
+  mounted() {
+    this.updateRangeSlider(this.el);
+
+    this.el.addEventListener("input", (e) => {
+      this.updateRangeSlider(e.target);
+    });
+  },
+
+  updateRangeSlider(slider) {
+    const value =
+      ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.background = `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${value}%, #e5e7eb ${value}%, #e5e7eb 100%)`;
+  },
+};
+
 // Make our hooks available to import in app.js
 export default Hooks;

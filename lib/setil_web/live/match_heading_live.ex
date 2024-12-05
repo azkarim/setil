@@ -11,7 +11,11 @@ defmodule SetilWeb.MatchHeadingLive do
 
   def mount(_params, _session, socket) do
     initial_state =
-      %{passage: [], loading: false}
+      %{
+        passage: [],
+        loading: false,
+        page_title: "Match heading with paragraph"
+      }
 
     {:ok, assign(socket, initial_state)}
   end
@@ -75,27 +79,15 @@ defmodule SetilWeb.MatchHeadingLive do
     Enum.shuffle([answer | options])
   end
 
-  defp input_class_when_option_selected(selected_option, option, answer) do
+  defp class_when_option_selected(selected_option, option, answer) do
     if selected_option == option do
       if option == answer do
-        "text-green-600 border-green-200 focus:ring-green-500"
+        "bg-emerald-500 text-white shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
       else
-        "text-red-600 border-red-200 focus:ring-red-500"
+        "bg-red-500 text-white shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
       end
     else
-      "text-blue-600 border-gray-200 focus:ring-blue-500"
-    end
-  end
-
-  defp label_class_when_option_selected(selected_option, option, answer) do
-    if selected_option == option do
-      if option == answer do
-        "text-white bg-green-500 border-green-200 focus:border-green-500 focus:ring-green-500"
-      else
-        "text-white bg-red-500 border-red-200  focus:border-red-500 focus:ring-red-500"
-      end
-    else
-      "text-gray-500 bg-white border-gray-200  focus:border-blue-500 focus:ring-blue-500"
+      "bg-white hover:bg-gray-50 shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
     end
   end
 
