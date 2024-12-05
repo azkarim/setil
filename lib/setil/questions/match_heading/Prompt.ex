@@ -1,5 +1,5 @@
-defmodule Setil.Instruct do
-  alias Setil.Passage
+defmodule Setil.Questions.MatchHeading.Prompt do
+  alias Setil.Questions.MatchHeading.Response
 
   def question(difficulty_level)
       when is_integer(difficulty_level) and difficulty_level >= 1 and difficulty_level <= 10 do
@@ -9,7 +9,7 @@ defmodule Setil.Instruct do
 
     Instructor.chat_completion(
       model: "gpt-4o-mini",
-      response_model: Passage,
+      response_model: Response,
       # max_retries: 3,
       messages: [
         %{

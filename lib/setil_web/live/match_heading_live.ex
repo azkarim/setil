@@ -2,11 +2,11 @@ defmodule SetilWeb.MatchHeadingLive do
   use SetilWeb, :live_view
   import Phoenix.Component
 
-  alias Setil.Instruct
-  alias Setil.Passage
+  alias Setil.Questions.MatchHeading.Prompt
+  alias Setil.Questions.MatchHeading.Response
 
   # TODO :
-  # - Currently `max_retries == 0` for `Instruct`.
+  # - Currently `max_retries == 0` for `Prompt`.
   # UI state is not definded when it fails on its first attempt.
 
   def mount(_params, _session, socket) do
@@ -38,7 +38,7 @@ defmodule SetilWeb.MatchHeadingLive do
     {:noreply, assign(socket, loading: true, passage: [])}
   end
 
-  def handle_info({:fetched_question, %Passage{} = question}, socket) do
+  def handle_info({:fetched_question, %Response{} = question}, socket) do
     socket =
       socket
       |> assign(:loading, false)
@@ -61,7 +61,7 @@ defmodule SetilWeb.MatchHeadingLive do
   end
 
   defp fetch_question(parent) do
-    with {:ok, result} <- Instruct.question(10) do
+    with {:ok, result} <- Prompt.question(10) do
       send(parent, {:fetched_question, result})
     else
       _ ->
