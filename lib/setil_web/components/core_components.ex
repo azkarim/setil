@@ -683,7 +683,7 @@ defmodule SetilWeb.CoreComponents do
 
     ~H"""
     <div class="flex-1 space-y-2">
-      <label for={@id} class={"text-sm font-mono #{@disabled && "opacity-50"}"}><%= @label %></label>
+      <label for={@id} class={"text-sm #{@disabled && "opacity-50"}"}><%= @label %></label>
       <input
         phx-hook="RangeSlider"
         type="range"
@@ -703,7 +703,7 @@ defmodule SetilWeb.CoreComponents do
             [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black
             [&::-moz-range-thumb]:shadow-[0_2px_0_0_rgba(0,0,0,1)] [&::-moz-range-thumb]:cursor-pointer"
       />
-      <div class={"flex justify-between text-xs font-mono #{@disabled && "opacity-50"}"}>
+      <div class={"flex justify-between text-xs #{@disabled && "opacity-50"}"}>
         <%= for i <- @min..@max//(@step) do %>
           <span class="inline-block cursor-default select-none text-xs"><%= i %></span>
         <% end %>

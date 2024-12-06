@@ -1,4 +1,8 @@
-<div class="w-full max-w-6xl mx-auto space-y-8" phx-hook="Confetti" id="confetti-container">
+<div
+  class="w-full max-w-6xl mx-auto space-y-8 font-mono"
+  phx-hook="Confetti"
+  id="confetti-container"
+>
   <!-- Controls -->
   <div class="flex justify-between gap-8 mb-12">
     <div class="flex-1 space-y-2">
@@ -26,7 +30,7 @@
     </div>
 
     <button
-      class="px-4 py-2 text-sm font-mono bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50 disabled:pointer-events-none"
+      class="px-4 py-2 text-sm bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50 disabled:pointer-events-none"
       ,
       type="button"
       phx-click="next-passage"
@@ -51,7 +55,7 @@
   <%= if (@passage != []) do %>
     <div class="flex gap-8">
       <div class="flex-1">
-        <div class="p-6 font-mono text-sm leading-relaxed bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] space-y-4">
+        <div class="p-6 text-sm leading-relaxed bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] space-y-4">
           <%= for paragraph <- @passage do %>
             <p><%= paragraph %></p>
           <% end %>
@@ -61,7 +65,7 @@
       <div class="w-72 space-y-2">
         <%= for option <- @options do %>
           <button
-            class={"w-full p-4 text-left text-sm font-mono border-2 border-black transition-all #{class_when_option_selected(@selected_option, option, @answer)}"}
+            class={"w-full p-4 text-left text-sm border-2 border-black transition-all #{class_when_option_selected(@selected_option, option, @answer)}"}
             phx-click="select_option"
             phx-value-option={option}
           >
@@ -71,6 +75,19 @@
       </div>
     </div>
   <% else %>
-    <div>Loading</div>
+    <!-- If content is loading -->
+    <div class="flex gap-8">
+      <div class="flex-1">
+        <div class="animate-pulse p-6 text-sm leading-relaxed bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] space-y-4 h-[50vh]">
+        </div>
+      </div>
+      <!-- Answers -->
+      <div class="w-72 space-y-2">
+        <%= for _ <- 1..4 do %>
+          <button class="animate-pulse w-full p-4 text-left text-sm border-2 border-black transition-all bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)] h-16 cursor-auto">
+          </button>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>
