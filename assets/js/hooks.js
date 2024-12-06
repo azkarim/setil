@@ -79,6 +79,8 @@ Hooks.RangeSlider = {
     });
   },
 
+  updated() {},
+
   updateRangeSlider(slider) {
     const value =
       ((slider.value - slider.min) / (slider.max - slider.min)) * 100;

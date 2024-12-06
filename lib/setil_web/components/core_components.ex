@@ -675,7 +675,7 @@ defmodule SetilWeb.CoreComponents do
   attr :value, :integer, default: nil
   attr :disabled, :boolean, default: false
   attr :class, :string, default: ""
-  attr :id, :string, default: nil
+  attr :id, :string
   attr :label, :string, default: "Range slider"
 
   def range_step_slider(assigns) do
