@@ -1,11 +1,22 @@
 defmodule Setil.Questions.MatchHeading.Prompt do
   alias Setil.Questions.MatchHeading.Response
 
-  def question(difficulty_level)
-      when is_integer(difficulty_level) and difficulty_level >= 1 and difficulty_level <= 10 do
-    min_words = 250
-    max_words = 300
-    no_of_options = 3
+  @default_words 350
+  @default_difficulty_level 10
+  @default_no_of_options 3
+
+  def default_config() do
+    %{words: @default_words, difficulty_level: @default_difficulty_level}
+  end
+
+  def match_heading(words \\ @default_words, difficulty_level \\ @default_difficulty_level)
+
+  def match_heading(words, difficulty_level)
+      when is_integer(difficulty_level) and is_integer(words) and difficulty_level >= 1 and
+             difficulty_level <= 10 and words >= 250 and words <= 900 do
+    min_words = words - 50
+    max_words = words
+    no_of_options = @default_no_of_options
 
     Instructor.chat_completion(
       model: "gpt-4o-mini",
@@ -39,7 +50,7 @@ defmodule Setil.Questions.MatchHeading.Prompt do
     |> IO.inspect()
   end
 
-  def question(_invalid_level) do
-    {:error, "Difficulty level must be an integer between 1 and 10"}
+  def match_heading(_invalid_words, _invalid_difficulty_level) do
+    {:error, "Malformed arguments"}
   end
 end

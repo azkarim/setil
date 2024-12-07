@@ -10,12 +10,18 @@ defmodule SetilWeb.MatchHeadingLive do
   # UI state is not definded when it fails on its first attempt.
 
   def mount(_params, _session, socket) do
-    initial_state =
+    prompt_config = Prompt.default_config()
+
+    page_state =
       %{
-        passage: [],
-        loading: false,
-        page_title: "Match heading with paragraph"
+        page_title: "Match heading with paragraph",
+        # response is a Prompt %Response{} as map rather struct.
+        response: nil,
+        selected_option: nil,
+        loading: false
       }
+
+    initial_state = Map.merge(prompt_config, page_state)
 
     {:ok, assign(socket, initial_state)}
   end
@@ -24,7 +30,7 @@ defmodule SetilWeb.MatchHeadingLive do
     socket = assign(socket, :selected_option, selected_option)
 
     socket =
-      if selected_option == socket.assigns.answer do
+      if selected_option == socket.assigns.response.answer do
         send_confetti(socket)
       else
         socket
@@ -39,16 +45,29 @@ defmodule SetilWeb.MatchHeadingLive do
     # there is no way to detect that and kill it!
     spawn(fn -> fetch_question(parent) end)
 
-    {:noreply, assign(socket, loading: true, passage: [])}
+    socket =
+      socket
+      |> assign(:loading, true)
+
+    {:noreply, socket}
   end
 
-  def handle_info({:fetched_question, %Response{} = question}, socket) do
+  def handle_info(
+        {:fetched_question, %Response{passage: passage, options: options, answer: answer}},
+        socket
+      ) do
+    # modify options to include answer
+    response =
+      %{
+        passage: passage,
+        options: get_shuffled_options(options, answer),
+        answer: answer
+      }
+
     socket =
       socket
       |> assign(:loading, false)
-      |> assign(:passage, question.passage)
-      |> assign(:options, get_shuffled_options(question.options, question.answer))
-      |> assign(:answer, question.answer)
+      |> assign(:response, response)
       |> assign(:selected_option, nil)
 
     {:noreply, socket}
@@ -58,14 +77,13 @@ defmodule SetilWeb.MatchHeadingLive do
     socket =
       socket
       |> assign(:loading, false)
-      |> assign(:passage, [])
       |> put_flash(:error, "Error fetching question. Try again!")
 
     {:noreply, socket}
   end
 
   defp fetch_question(parent) do
-    with {:ok, result} <- Prompt.question(10) do
+    with {:ok, result} <- Prompt.match_heading() do
       send(parent, {:fetched_question, result})
     else
       _ ->
