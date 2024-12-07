@@ -15,7 +15,7 @@ defmodule Setil.Questions.MatchHeading.Prompt do
         %{
           role: "system",
           content: """
-          You are an examiner for the IELTS Reading module. Your task is to create a passage and design a "Match the Heading" question. The passage should be between #{min_words} and #{max_words} words, with a difficulty level determined by the user (1 to 10). Based on the passage:
+          You are an examiner for the Academic IELTS Reading module. Your task is to create a passage and design a "Match the Heading" question. The passage should be between #{min_words} and #{max_words} words, with a difficulty level determined by the user (1 to 10). Based on the passage:
 
           1. Provide one correct heading that accurately captures the main idea of the passage.
           2. Create #{no_of_options} distractor headings derived from the content of the passage. These distractors must be relevant and plausible, making it challenging to distinguish the correct heading from the distractors.
