@@ -79,7 +79,9 @@ Hooks.RangeSlider = {
     });
   },
 
-  updated() {},
+  updated() {
+    this.updateRangeSlider(this.el);
+  },
 
   updateRangeSlider(slider) {
     const value =

@@ -22,11 +22,27 @@ defmodule SetilWeb.MatchHeadingLive do
      |> maybe_send_confetti(selected_option)}
   end
 
+  def handle_event("set-words", %{"slider-words" => value}, socket) do
+    {words, _} = Integer.parse(value)
+
+    {:noreply,
+     socket
+     |> assign(:words, words)}
+  end
+
+  def handle_event("set-difficulty", %{"slider-difficulty" => value}, socket) do
+    {difficulty, _} = Integer.parse(value)
+
+    {:noreply,
+     socket
+     |> assign(:difficulty, difficulty)}
+  end
+
   def handle_event("next-passage", _params, socket) do
     parent = self()
     # TODO : Process may become zombie and currently
     # there is no way to detect that and kill it!
-    spawn(fn -> fetch_passage(parent) end)
+    spawn(fn -> fetch_passage(parent, socket.assigns.words, socket.assigns.difficulty) end)
 
     {:noreply,
      socket
@@ -61,8 +77,8 @@ defmodule SetilWeb.MatchHeadingLive do
     })
   end
 
-  defp fetch_passage(parent) do
-    with {:ok, result} <- Prompt.match_heading() do
+  defp fetch_passage(parent, words, difficulty) do
+    with {:ok, result} <- Prompt.match_heading(words, difficulty) do
       send(parent, {:fetched_passage, result})
     else
       _ ->

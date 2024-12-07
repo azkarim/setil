@@ -4,53 +4,59 @@
   id="confetti-container"
 >
   <!-- Controls -->
-  <div class="flex justify-between gap-8 mb-12">
-    <div class="flex-1 space-y-2">
-      <.range_step_slider
-        label="Words"
-        min={250}
-        max={900}
-        value={@words}
-        step={50}
-        disabled={@loading}
-        class="text-xs text-gray-800"
-      />
-    </div>
+  <form>
+    <div class="flex justify-between gap-8 mb-12">
+      <div class="flex-1 space-y-2">
+        <.range_step_slider
+          id="slider-words"
+          label="Words"
+          min={250}
+          max={900}
+          value={@words}
+          step={50}
+          disabled={@loading}
+          class="text-xs text-gray-800"
+          phx_change="set-words"
+        />
+      </div>
 
-    <div class="flex-1 space-y-2">
-      <.range_step_slider
-        label="Difficulty"
-        min={1}
-        max={10}
-        value={@difficulty_level}
-        step={1}
-        disabled={@loading}
-        class="text-xs text-gray-800"
-      />
-    </div>
+      <div class="flex-1 space-y-2">
+        <.range_step_slider
+          id="slider-difficulty"
+          label="Difficulty"
+          min={1}
+          max={10}
+          value={@difficulty}
+          step={1}
+          disabled={@loading}
+          class="text-xs text-gray-800"
+          phx_change="set-difficulty"
+        />
+      </div>
 
-    <button
-      class="px-4 py-2 text-sm bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50 disabled:pointer-events-none"
-      ,
-      type="button"
-      phx-click="next-passage"
-      disabled={@loading}
-    >
-      Next passage
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="inline-block w-4 h-4 ml-1"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+      <button
+        class="px-4 py-2 text-sm bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50 disabled:pointer-events-none"
+        ,
+        type="button"
+        phx-click="next-passage"
+        disabled={@loading}
       >
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-    </button>
-  </div>
+        Next passage
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="inline-block w-4 h-4 ml-1"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </form>
   <!-- Content -->
   <%= if !@loading && @response do %>
     <div class="flex gap-8">
@@ -78,7 +84,7 @@
     <!-- If content is loading -->
     <div class="flex gap-8">
       <div class="flex-1">
-        <div class="animate-pulse p-6 text-sm leading-relaxed bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] h-[50vh] py-1 space-y-8 flex flex-col justify-center">
+        <div class="animate-pulse p-6 text-sm leading-relaxed bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] h-[50vh] py-1 space-y-8 flex flex-col justify-center overflow-hidden">
           <%= for _ <- 1..5 do %>
             <div class="flex flex-col space-y-4">
               <div class="h-2 bg-slate-700 rounded"></div>

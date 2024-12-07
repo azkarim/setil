@@ -677,6 +677,7 @@ defmodule SetilWeb.CoreComponents do
   attr :class, :string, default: ""
   attr :id, :string
   attr :label, :string, default: "Range slider"
+  attr :phx_change, :string, default: nil
 
   def range_step_slider(assigns) do
     assigns = assign_new(assigns, :id, fn -> "range-#{System.unique_integer()}" end)
@@ -688,12 +689,14 @@ defmodule SetilWeb.CoreComponents do
         phx-hook="RangeSlider"
         type="range"
         id={@id}
+        name={@id}
         aria-orientation="horizontal"
         disabled={@disabled}
         min={@min}
         max={@max}
         step={@step}
         value={@value}
+        phx-change={@phx_change}
         class="w-full h-[2px] bg-gray-200 rounded-lg appearance-none cursor-pointer disabled:opacity-50 transition-opacity duration-200
             [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4
             [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:rounded-full

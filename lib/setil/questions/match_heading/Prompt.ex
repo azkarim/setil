@@ -6,19 +6,19 @@ defmodule Setil.Questions.MatchHeading.Prompt do
   @default_no_of_options 3
 
   def default_config() do
-    %{words: @default_words, difficulty_level: @default_difficulty_level}
+    %{words: @default_words, difficulty: @default_difficulty_level}
   end
 
-  def match_heading(words \\ @default_words, difficulty_level \\ @default_difficulty_level)
+  def match_heading(words \\ @default_words, difficulty \\ @default_difficulty_level)
 
-  def match_heading(words, difficulty_level)
-      when is_integer(difficulty_level) and is_integer(words) and difficulty_level >= 1 and
-             difficulty_level <= 10 and words >= 250 and words <= 900 do
+  def match_heading(words, difficulty)
+      when is_integer(difficulty) and is_integer(words) and difficulty >= 1 and
+             difficulty <= 10 and words >= 250 and words <= 900 do
     min_words = words - 50
 
     max_words = words
 
-    with {:ok, result} <- do_chat_completion(min_words, max_words, difficulty_level) do
+    with {:ok, result} <- do_chat_completion(min_words, max_words, difficulty) do
       {:ok, result} |> IO.inspect()
     else
       {:error, reason} -> {:error, reason}
@@ -30,14 +30,14 @@ defmodule Setil.Questions.MatchHeading.Prompt do
     {:error, "Malformed arguments"}
   end
 
-  defp do_chat_completion(min_words, max_words, difficulty_level) do
+  defp do_chat_completion(min_words, max_words, difficulty) do
     Instructor.chat_completion(
       model: "gpt-4o-mini",
       response_model: Response,
       # max_retries: 3,
       messages: [
         system_message(min_words, max_words),
-        user_message(min_words, max_words, difficulty_level)
+        user_message(min_words, max_words, difficulty)
       ]
     )
   end
@@ -56,11 +56,11 @@ defmodule Setil.Questions.MatchHeading.Prompt do
     }
   end
 
-  defp user_message(min_words, max_words, difficulty_level) do
+  defp user_message(min_words, max_words, difficulty) do
     %{
       role: "user",
       content: """
-      I'm ready for a question. The difficulty level is #{difficulty_level}.
+      I'm ready for a question. The difficulty level is #{difficulty}.
 
       Return:
       - passage: An array of strings. Each paragraph forms a new element in the array. Passage must be #{min_words}-#{max_words} words long.
