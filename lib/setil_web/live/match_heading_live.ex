@@ -10,84 +10,79 @@ defmodule SetilWeb.MatchHeadingLive do
   # UI state is not definded when it fails on its first attempt.
 
   def mount(_params, _session, socket) do
-    prompt_config = Prompt.default_config()
-
-    page_state =
-      %{
-        page_title: "Match heading with paragraph",
-        # response is a Prompt %Response{} as map rather struct.
-        response: nil,
-        selected_option: nil,
-        loading: false
-      }
-
-    initial_state = Map.merge(prompt_config, page_state)
-
-    {:ok, assign(socket, initial_state)}
+    {:ok,
+     socket
+     |> assign(initial_state())}
   end
 
   def handle_event("select_option", %{"option" => selected_option}, socket) do
-    socket = assign(socket, :selected_option, selected_option)
-
-    socket =
-      if selected_option == socket.assigns.response.answer do
-        send_confetti(socket)
-      else
-        socket
-      end
-
-    {:noreply, socket}
+    {:noreply,
+     socket
+     |> assign(:selected_option, selected_option)
+     |> maybe_send_confetti(selected_option)}
   end
 
   def handle_event("next-passage", _params, socket) do
     parent = self()
     # TODO : Process may become zombie and currently
     # there is no way to detect that and kill it!
-    spawn(fn -> fetch_question(parent) end)
+    spawn(fn -> fetch_passage(parent) end)
 
-    socket =
-      socket
-      |> assign(:loading, true)
-
-    {:noreply, socket}
+    {:noreply,
+     socket
+     |> assign(:loading, true)}
   end
 
-  def handle_info(
-        {:fetched_question, %Response{passage: passage, options: options, answer: answer}},
-        socket
-      ) do
-    # modify options to include answer
-    response =
-      %{
-        passage: passage,
-        options: get_shuffled_options(options, answer),
-        answer: answer
-      }
-
-    socket =
-      socket
-      |> assign(:loading, false)
-      |> assign(:response, response)
-      |> assign(:selected_option, nil)
-
-    {:noreply, socket}
+  def handle_info({:fetched_passage, %Response{} = response}, socket) do
+    {:noreply,
+     socket
+     |> assign(:loading, false)
+     |> assign(:response, prepare_response(response))
+     |> assign(:selected_option, nil)}
   end
 
-  def handle_info(:error_fetching_question, socket) do
-    socket =
-      socket
-      |> assign(:loading, false)
-      |> put_flash(:error, "Error fetching question. Try again!")
-
-    {:noreply, socket}
+  def handle_info(:error_fetching_passage, socket) do
+    {:noreply,
+     socket
+     |> assign(:loading, false)
+     |> put_flash(:error, "Error fetching passage. Try again!")}
   end
 
-  defp fetch_question(parent) do
+  # Private functions
+
+  defp initial_state do
+    Prompt.default_config()
+    |> Map.merge(%{
+      page_title: "Match heading with paragraph",
+      # response is a Prompt %Response{} as map rather struct.
+      response: nil,
+      selected_option: nil,
+      loading: false
+    })
+  end
+
+  defp fetch_passage(parent) do
     with {:ok, result} <- Prompt.match_heading() do
-      send(parent, {:fetched_question, result})
+      send(parent, {:fetched_passage, result})
     else
       _ ->
-        send(parent, :error_fetching_question)
+        send(parent, :error_fetching_passage)
+    end
+  end
+
+  defp prepare_response(%Response{passage: passage, options: options, answer: answer}) do
+    %{
+      passage: passage,
+      options: get_shuffled_options(options, answer),
+      answer: answer
+    }
+  end
+
+  defp maybe_send_confetti(socket, selected_option) do
+    if selected_option == socket.assigns.response.answer do
+      push_event(socket, "trigger-confetti", %{type: "celebration"})
+    else
+      socket
     end
   end
 
@@ -107,9 +102,5 @@ defmodule SetilWeb.MatchHeadingLive do
     else
       "bg-white hover:bg-gray-50 shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
     end
-  end
-
-  defp send_confetti(socket, type \\ "celebration") do
-    push_event(socket, "trigger-confetti", %{type: type})
   end
 end
