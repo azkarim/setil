@@ -5,6 +5,9 @@ defmodule SetilWeb.MatchHeadingLive do
   alias Setil.Questions.MatchHeading.Prompt
   alias Setil.Questions.MatchHeading.Response
 
+  @default_words 350
+  @default_difficulty_level 10
+
   # TODO :
   # - Currently `max_retries == 0` for `Prompt`.
   # UI state is not definded when it fails on its first attempt.
@@ -38,11 +41,19 @@ defmodule SetilWeb.MatchHeadingLive do
      |> assign(:difficulty, difficulty)}
   end
 
+  def handle_event("set-theme", %{"input-theme" => theme}, socket) do
+    {:noreply,
+     socket
+     |> assign(:theme, theme)}
+  end
+
   def handle_event("next-passage", _params, socket) do
     parent = self()
     # TODO : Process may become zombie and currently
     # there is no way to detect that and kill it!
-    spawn(fn -> fetch_passage(parent, socket.assigns.words, socket.assigns.difficulty) end)
+    spawn(fn ->
+      fetch_passage(parent, socket.assigns.theme, socket.assigns.words, socket.assigns.difficulty)
+    end)
 
     {:noreply,
      socket
@@ -67,7 +78,7 @@ defmodule SetilWeb.MatchHeadingLive do
   # Private functions
 
   defp initial_state do
-    Prompt.default_config()
+    default_prompt_config()
     |> Map.merge(%{
       page_title: "Match heading with paragraph",
       # response is a Prompt %Response{} as map rather struct.
@@ -77,8 +88,12 @@ defmodule SetilWeb.MatchHeadingLive do
     })
   end
 
-  defp fetch_passage(parent, words, difficulty) do
-    with {:ok, result} <- Prompt.match_heading(words, difficulty) do
+  defp default_prompt_config() do
+    %{words: @default_words, difficulty: @default_difficulty_level, theme: nil}
+  end
+
+  defp fetch_passage(parent, theme, words, difficulty) do
+    with {:ok, result} <- Prompt.match_heading(theme, words, difficulty) do
       send(parent, {:fetched_passage, result})
     else
       _ ->

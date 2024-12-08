@@ -4,9 +4,9 @@
   id="confetti-container"
 >
   <!-- Controls -->
-  <form>
-    <div class="flex justify-between gap-8 mb-12">
-      <div class="flex-1 space-y-2">
+  <form phx-submit="next-passage">
+    <div class="flex justify-between gap-8 mb-12 items-end">
+      <div class="flex-1">
         <.range_step_slider
           id="slider-words"
           label="Words"
@@ -20,7 +20,7 @@
         />
       </div>
 
-      <div class="flex-1 space-y-2">
+      <div class="flex-1">
         <.range_step_slider
           id="slider-difficulty"
           label="Difficulty"
@@ -34,12 +34,27 @@
         />
       </div>
 
+      <div class={"flex-1 flex flex-col self-start #{@loading && "opacity-50"}"}>
+        <label for="input-theme" class="text-sm pb-1">Theme</label>
+        <input
+          type="text"
+          id="input-theme"
+          name="input-theme"
+          maxlength="120"
+          placeholder="The art of pottery..."
+          class="appearance-none outline-none focus:ring-0 text-sm bg-transparent border-x-0 border-t-0 border-b-2 border-b-blue-500 p-0 pt-0 placeholder:text-gray-400"
+          value={@theme || ""}
+          phx-debounce="blur"
+          phx-change="set-theme"
+          disabled={@loading}
+        />
+      </div>
+
       <button
         class="px-4 py-2 text-sm bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50 disabled:pointer-events-none"
         ,
-        type="button"
-        phx-click="next-passage"
         disabled={@loading}
+        type="submit"
       >
         Next passage
         <svg
