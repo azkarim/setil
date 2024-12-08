@@ -1,13 +1,7 @@
 defmodule Setil.Questions.MatchHeading.Prompt do
   alias Setil.Questions.MatchHeading.Response
 
-  @default_words 350
-  @default_difficulty_level 10
   @default_no_of_options 3
-
-  def default_config() do
-    %{words: @default_words, difficulty: @default_difficulty_level, theme: nil}
-  end
 
   def match_heading(theme, words, difficulty)
       when is_integer(difficulty) and is_integer(words) and difficulty >= 1 and
@@ -71,7 +65,6 @@ defmodule Setil.Questions.MatchHeading.Prompt do
   defp user_message(theme, min_words, max_words, difficulty) do
     theme_prompt =
       if theme do
-        # ", and the theme is \"#{theme}.\""
         ", and the theme is \"#{theme}.\""
       else
         "."

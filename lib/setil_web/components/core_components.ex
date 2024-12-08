@@ -709,11 +709,6 @@ defmodule SetilWeb.CoreComponents do
             [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black
             [&::-moz-range-thumb]:shadow-[0_2px_0_0_rgba(0,0,0,1)] [&::-moz-range-thumb]:cursor-pointer"
       />
-      <%!-- <div class={"flex justify-between text-xs #{@disabled && "opacity-50"}"}>
-        <%= for i <- @min..@max//(@step) do %>
-          <span class="inline-block cursor-default select-none text-xs"><%= i %></span>
-        <% end %>
-      </div> --%>
     </div>
     """
   end
