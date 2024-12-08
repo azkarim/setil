@@ -9,8 +9,6 @@ defmodule Setil.Questions.MatchHeading.Prompt do
     %{words: @default_words, difficulty: @default_difficulty_level}
   end
 
-  def match_heading(words \\ @default_words, difficulty \\ @default_difficulty_level)
-
   def match_heading(words, difficulty)
       when is_integer(difficulty) and is_integer(words) and difficulty >= 1 and
              difficulty <= 10 and words >= 250 and words <= 900 do
