@@ -18,6 +18,10 @@ defmodule SetilWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+  end
+
+  scope "/app", SetilWeb do
+    pipe_through :browser
 
     live "/match-heading", MatchHeadingLive
   end
