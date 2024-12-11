@@ -200,7 +200,7 @@ defmodule SetilWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -229,8 +229,10 @@ defmodule SetilWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "phx-submit-loading:opacity-75 rounded-xl bg-brand p-6",
+        "text-lg font-bold leading-6 text-white active:text-white/80",
+        "border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+        "transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none hover:bg-zinc-900",
         @class
       ]}
       {@rest}
@@ -285,6 +287,8 @@ defmodule SetilWeb.CoreComponents do
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
+  attr :class, :string, default: nil
+
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
@@ -316,7 +320,10 @@ defmodule SetilWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class={[
+            "text-zinc-900 focus:ring-0 h-5 w-5 rounded-md border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]",
+            @class
+          ]}
           {@rest}
         />
         <%= @label %>
@@ -333,7 +340,10 @@ defmodule SetilWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class={[
+          "mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm",
+          @class
+        ]}
         multiple={@multiple}
         {@rest}
       >
@@ -355,7 +365,8 @@ defmodule SetilWeb.CoreComponents do
         class={[
           "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
+          @errors != [] && "border-rose-400 focus:border-rose-400",
+          @class
         ]}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
@@ -363,6 +374,8 @@ defmodule SetilWeb.CoreComponents do
     </div>
     """
   end
+
+  # "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
 
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
@@ -375,9 +388,10 @@ defmodule SetilWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
+          "mt-2 block w-full border-2 bg-white text-zinc-900 sm:leading-6 rounded-xl p-3 text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:appearance-none focus:ring-2 transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none",
+          @errors == [] && "border-black focus:border-blue-500 focus:ring-blue-500",
+          @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400",
+          @class
         ]}
         {@rest}
       />
