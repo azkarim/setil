@@ -11,4 +11,8 @@ defmodule SetilWeb.Layouts do
   use SetilWeb, :html
 
   embed_templates "layouts/*"
+
+  def app_path?(conn) do
+    String.starts_with?(conn.request_path, "/app")
+  end
 end
