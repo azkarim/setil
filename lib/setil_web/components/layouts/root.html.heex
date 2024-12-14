@@ -4,9 +4,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title suffix=" · Setil">
-      <%= assigns[:page_title] || "Setil" %>
+    <meta
+      name="description"
+      content="SETIL - Practice platform for TOEFL, IELTS, and English proficiency tests. Improve your English skills with our innovative learning tools."
+    />
+    <meta
+      name="keywords"
+      content="TOEFL, IELTS, English practice, Mock exams, language learning, English proficiency"
+    />
+    <meta name="author" content="SETIL" />
+    <!-- Open Graph metadata for social sharing -->
+    <meta property="og:title" content={assigns[:page_title] || "SETIL"} />
+    <meta
+      property="og:description"
+      content="Practice platform for TOEFL, IELTS, and English proficiency tests. Improve your English skills with our innovative learning tools."
+    />
+    <meta property="og:type" content="website" />
+    <!-- Title -->
+    <.live_title suffix=" · SETIL">
+      <%= assigns[:page_title] || "SETIL" %>
     </.live_title>
+    <!-- Styles and Scripts -->
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
@@ -16,50 +34,7 @@
     >
     </script>
   </head>
-  <body class="bg-gray-50 font-mono">
-    <%!-- <%= unless app_path?(@conn) do %>
-      <ul class="bg-gray-50 relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-        <%= if @current_user do %>
-          <li class="text-[0.8125rem] leading-6 text-zinc-900">
-            <%= @current_user.email %>
-          </li>
-          <li>
-            <.link
-              href={~p"/users/settings"}
-              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-            >
-              Settings
-            </.link>
-          </li>
-          <li>
-            <.link
-              href={~p"/users/log_out"}
-              method="delete"
-              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-            >
-              Log out
-            </.link>
-          </li>
-        <% else %>
-          <li>
-            <.link
-              href={~p"/users/register"}
-              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-            >
-              Register
-            </.link>
-          </li>
-          <li>
-            <.link
-              href={~p"/users/log_in"}
-              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-            >
-              Log in
-            </.link>
-          </li>
-        <% end %>
-      </ul>
-    <% end %> --%>
+  <body class="bg-gray-50 font-mono antialiased">
     <%= @inner_content %>
   </body>
 </html>

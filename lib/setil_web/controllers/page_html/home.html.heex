@@ -1,82 +1,87 @@
 <.flash_group flash={@flash} />
+<.link href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4">
+  Skip to main content
+</.link>
 <div class="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-  <header role="banner">
-    <nav class="w-full py-2 bg-white border-b-4 border-black" aria-label="Main navigation">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
-          <.link
-            href="/"
-            class="text-2xl font-mono font-bold text-zinc-900"
-            aria-label="SETIL Home"
-          >
-            <h1>SETIL</h1>
-          </.link>
-          <div class="flex gap-8">
-            <ul class="flex gap-8 items-center" role="list">
-              <%= for {item, url} <- [{"Home", "/"}, {"About", "/about"} ] do %>
-                <li>
-                  <.link
-                    href={url}
-                    class="font-mono text-black hover:text-brand transition-colors"
-                    aria-label={"Navigate to #{item}"}
-                  >
-                    <%= item %>
-                  </.link>
-                </li>
-              <% end %>
-            </ul>
-            <ul class="flex gap-4">
+  <nav class="w-full py-2 bg-white border-b-4 border-black" aria-label="Main navigation">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <.link
+          href={~p"/"}
+          class="text-2xl font-mono font-bold text-zinc-900"
+          aria-label="SETIL Home"
+        >
+          SETIL
+        </.link>
+        <div class="flex gap-8">
+          <ul class="flex gap-8 items-center" aria-label="Site navigation">
+            <%= for {item, url} <- [{"Home", ~p"/"}, {"About", ~p"/"} ] do %>
               <li>
                 <.link
-                  href={~p"/users/log_in"}
-                  class="inline-block bg-white rounded-lg text-zinc-900 font-mono px-8 py-2 text-lg border-2 border-black shadow-sm-brutal cursor-pointer"
-                  role="button"
-                  aria-label="Login"
+                  href={url}
+                  class="font-mono text-black hover:text-brand transition-colors"
+                  aria-label={"Navigate to #{item}"}
                 >
-                  Log in
+                  <%= item %>
                 </.link>
               </li>
-              <li>
-                <.link
-                  href={~p"/users/register"}
-                  class="inline-block bg-brand rounded-lg text-white font-mono px-8 py-2 text-lg border-2 border-black shadow-sm-brutal cursor-pointer"
-                  role="button"
-                  aria-label="Sign up"
-                >
-                  Sign up
-                </.link>
-              </li>
-            </ul>
-          </div>
+            <% end %>
+          </ul>
+          <ul class="flex gap-4" aria-label="User authentication">
+            <li>
+              <.link
+                href={~p"/users/log_in"}
+                class="inline-block bg-white rounded-lg text-zinc-900 font-mono px-8 py-2 text-lg border-2 border-black shadow-sm-brutal cursor-pointer"
+                role="button"
+                aria-label="Login"
+              >
+                Log in
+              </.link>
+            </li>
+            <li>
+              <.link
+                href={~p"/users/register"}
+                class="inline-block bg-brand rounded-lg text-white font-mono px-8 py-2 text-lg border-2 border-black shadow-sm-brutal cursor-pointer"
+                role="button"
+                aria-label="Sign up"
+              >
+                Sign up
+              </.link>
+            </li>
+          </ul>
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
+
+  <header
+    class="relative overflow-hidden"
+    aria-labelledby="hero-heading"
+    aria-describedby="hero-description"
+  >
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
+      <div class="max-w-3xl">
+        <h1 id="hero-heading" class="text-5xl font-mono font-bold text-black mb-6 space-y-2">
+          <span class="block">Master English Exams with</span>
+          <span class="block text-brand">SETIL</span>
+        </h1>
+        <p id="hero-description" class="text-xl mb-8 font-mono text-gray-700">
+          Prepare for TOEFL, IELTS, and other English proficiency tests with our
+          innovative practice platform.
+        </p>
+        <.link
+          href={~p"/users/register"}
+          class="inline-block bg-brand text-white font-mono px-8 py-4 text-lg border-4 border-black shadow-brutal hover:-translate-y-1 transform transition-transform cursor-pointer"
+          role="button"
+          aria-label="Start practicing now"
+        >
+          Start Practicing Now
+        </.link>
+      </div>
+    </div>
   </header>
 
   <main id="main-content">
-    <section class="relative overflow-hidden" aria-labelledby="hero-heading">
-      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
-        <div class="max-w-3xl">
-          <h2 id="hero-heading" class="text-5xl font-mono font-bold text-black mb-6 space-y-2">
-            <span class="block">Master English Exams with</span>
-            <span class="block text-brand">SETIL</span>
-          </h2>
-          <p class="text-xl mb-8 font-mono text-gray-700">
-            Prepare for TOEFL, IELTS, and other English proficiency tests with our
-            innovative practice platform.
-          </p>
-          <.link
-            href={~p"/users/log_in"}
-            class="inline-block bg-brand text-white font-mono px-8 py-4 text-lg border-4 border-black shadow-brutal hover:-translate-y-1 transform transition-transform cursor-pointer"
-            role="button"
-            aria-label="Start practicing now"
-          >
-            Start Practicing Now
-          </.link>
-        </div>
-      </div>
-    </section>
-
     <section
       class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24"
       aria-labelledby="features-heading"
@@ -84,10 +89,14 @@
       <h2 id="features-heading" class="text-3xl font-mono font-bold mb-12 text-center">
         Reading Practice
       </h2>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
-        <%= for feature <- features() do %>
-          <.feature_card title={feature.title} status={feature.status} />
-        <% end %>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <ul role="list" class="contents">
+          <%= for feature <- features() do %>
+            <li>
+              <.feature_card title={feature.title} status={feature.status} />
+            </li>
+          <% end %>
+        </ul>
       </div>
     </section>
 
@@ -113,7 +122,7 @@
     </section>
   </main>
 
-  <footer class="bg-indigo-400 py-8" role="contentinfo">
+  <footer class="bg-indigo-400 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="text-center text-white">
         © <%= DateTime.utc_now().year %> SETIL. All rights reserved.
