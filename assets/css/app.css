@@ -3,3 +3,15 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+
+.shadow-brutal {
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.shadow-sm-brutal {
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.shadow-lg-brutal {
+    box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+}
