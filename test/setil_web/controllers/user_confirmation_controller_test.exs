@@ -9,19 +9,19 @@ defmodule SetilWeb.UserConfirmationControllerTest do
     %{user: user_fixture()}
   end
 
-  describe "GET /users/confirm" do
+  describe "GET /app/users/confirm" do
     test "renders the resend confirmation page", %{conn: conn} do
-      conn = get(conn, ~p"/users/confirm")
+      conn = get(conn, ~p"/app/users/confirm")
       response = html_response(conn, 200)
       assert response =~ "Resend confirmation instructions"
     end
   end
 
-  describe "POST /users/confirm" do
+  describe "POST /app/users/confirm" do
     @tag :capture_log
     test "sends a new confirmation token", %{conn: conn, user: user} do
       conn =
-        post(conn, ~p"/users/confirm", %{
+        post(conn, ~p"/app/users/confirm", %{
           "user" => %{"email" => user.email}
         })
 
@@ -37,7 +37,7 @@ defmodule SetilWeb.UserConfirmationControllerTest do
       Repo.update!(Accounts.User.confirm_changeset(user))
 
       conn =
-        post(conn, ~p"/users/confirm", %{
+        post(conn, ~p"/app/users/confirm", %{
           "user" => %{"email" => user.email}
         })
 
@@ -51,7 +51,7 @@ defmodule SetilWeb.UserConfirmationControllerTest do
 
     test "does not send confirmation token if email is invalid", %{conn: conn} do
       conn =
-        post(conn, ~p"/users/confirm", %{
+        post(conn, ~p"/app/users/confirm", %{
           "user" => %{"email" => "unknown@example.com"}
         })
 
@@ -64,9 +64,9 @@ defmodule SetilWeb.UserConfirmationControllerTest do
     end
   end
 
-  describe "GET /users/confirm/:token" do
+  describe "GET /app/users/confirm/:token" do
     test "renders the confirmation page", %{conn: conn} do
-      token_path = ~p"/users/confirm/some-token"
+      token_path = ~p"/app/users/confirm/some-token"
       conn = get(conn, token_path)
       response = html_response(conn, 200)
       assert response =~ "Confirm account"
@@ -75,14 +75,14 @@ defmodule SetilWeb.UserConfirmationControllerTest do
     end
   end
 
-  describe "POST /users/confirm/:token" do
+  describe "POST /app/users/confirm/:token" do
     test "confirms the given token once", %{conn: conn, user: user} do
       token =
         extract_user_token(fn url ->
           Accounts.deliver_user_confirmation_instructions(user, url)
         end)
 
-      conn = post(conn, ~p"/users/confirm/#{token}")
+      conn = post(conn, ~p"/app/users/confirm/#{token}")
       assert redirected_to(conn) == ~p"/"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
@@ -93,7 +93,7 @@ defmodule SetilWeb.UserConfirmationControllerTest do
       assert Repo.all(Accounts.UserToken) == []
 
       # When not logged in
-      conn = post(conn, ~p"/users/confirm/#{token}")
+      conn = post(conn, ~p"/app/users/confirm/#{token}")
       assert redirected_to(conn) == ~p"/"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
@@ -103,14 +103,14 @@ defmodule SetilWeb.UserConfirmationControllerTest do
       conn =
         build_conn()
         |> log_in_user(user)
-        |> post(~p"/users/confirm/#{token}")
+        |> post(~p"/app/users/confirm/#{token}")
 
       assert redirected_to(conn) == ~p"/"
       refute Phoenix.Flash.get(conn.assigns.flash, :error)
     end
 
     test "does not confirm email with invalid token", %{conn: conn, user: user} do
-      conn = post(conn, ~p"/users/confirm/oops")
+      conn = post(conn, ~p"/app/users/confirm/oops")
       assert redirected_to(conn) == ~p"/"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~

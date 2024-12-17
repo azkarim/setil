@@ -6,24 +6,24 @@ defmodule SetilWeb.UserSettingsControllerTest do
 
   setup :register_and_log_in_user
 
-  describe "GET /users/settings" do
+  describe "GET /app/users/settings" do
     test "renders settings page", %{conn: conn} do
-      conn = get(conn, ~p"/users/settings")
+      conn = get(conn, ~p"/app/users/settings")
       response = html_response(conn, 200)
       assert response =~ "Settings"
     end
 
     test "redirects if user is not logged in" do
       conn = build_conn()
-      conn = get(conn, ~p"/users/settings")
-      assert redirected_to(conn) == ~p"/users/log_in"
+      conn = get(conn, ~p"/app/users/settings")
+      assert redirected_to(conn) == ~p"/app/users/log_in"
     end
   end
 
-  describe "PUT /users/settings (change password form)" do
+  describe "PUT /app/users/settings (change password form)" do
     test "updates the user password and resets tokens", %{conn: conn, user: user} do
       new_password_conn =
-        put(conn, ~p"/users/settings", %{
+        put(conn, ~p"/app/users/settings", %{
           "action" => "update_password",
           "current_password" => valid_user_password(),
           "user" => %{
@@ -32,7 +32,7 @@ defmodule SetilWeb.UserSettingsControllerTest do
           }
         })
 
-      assert redirected_to(new_password_conn) == ~p"/users/settings"
+      assert redirected_to(new_password_conn) == ~p"/app/users/settings"
 
       assert get_session(new_password_conn, :user_token) != get_session(conn, :user_token)
 
@@ -44,7 +44,7 @@ defmodule SetilWeb.UserSettingsControllerTest do
 
     test "does not update password on invalid data", %{conn: conn} do
       old_password_conn =
-        put(conn, ~p"/users/settings", %{
+        put(conn, ~p"/app/users/settings", %{
           "action" => "update_password",
           "current_password" => "invalid",
           "user" => %{
@@ -63,17 +63,17 @@ defmodule SetilWeb.UserSettingsControllerTest do
     end
   end
 
-  describe "PUT /users/settings (change email form)" do
+  describe "PUT /app/users/settings (change email form)" do
     @tag :capture_log
     test "updates the user email", %{conn: conn, user: user} do
       conn =
-        put(conn, ~p"/users/settings", %{
+        put(conn, ~p"/app/users/settings", %{
           "action" => "update_email",
           "current_password" => valid_user_password(),
           "user" => %{"email" => unique_user_email()}
         })
 
-      assert redirected_to(conn) == ~p"/users/settings"
+      assert redirected_to(conn) == ~p"/app/users/settings"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "A link to confirm your email"
@@ -83,7 +83,7 @@ defmodule SetilWeb.UserSettingsControllerTest do
 
     test "does not update email on invalid data", %{conn: conn} do
       conn =
-        put(conn, ~p"/users/settings", %{
+        put(conn, ~p"/app/users/settings", %{
           "action" => "update_email",
           "current_password" => "invalid",
           "user" => %{"email" => "with spaces"}
@@ -96,7 +96,7 @@ defmodule SetilWeb.UserSettingsControllerTest do
     end
   end
 
-  describe "GET /users/settings/confirm_email/:token" do
+  describe "GET /app/users/settings/confirm_email/:token" do
     setup %{user: user} do
       email = unique_user_email()
 
@@ -109,8 +109,8 @@ defmodule SetilWeb.UserSettingsControllerTest do
     end
 
     test "updates the user email once", %{conn: conn, user: user, token: token, email: email} do
-      conn = get(conn, ~p"/users/settings/confirm_email/#{token}")
-      assert redirected_to(conn) == ~p"/users/settings"
+      conn = get(conn, ~p"/app/users/settings/confirm_email/#{token}")
+      assert redirected_to(conn) == ~p"/app/users/settings"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "Email changed successfully"
@@ -118,17 +118,17 @@ defmodule SetilWeb.UserSettingsControllerTest do
       refute Accounts.get_user_by_email(user.email)
       assert Accounts.get_user_by_email(email)
 
-      conn = get(conn, ~p"/users/settings/confirm_email/#{token}")
+      conn = get(conn, ~p"/app/users/settings/confirm_email/#{token}")
 
-      assert redirected_to(conn) == ~p"/users/settings"
+      assert redirected_to(conn) == ~p"/app/users/settings"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
                "Email change link is invalid or it has expired"
     end
 
     test "does not update email with invalid token", %{conn: conn, user: user} do
-      conn = get(conn, ~p"/users/settings/confirm_email/oops")
-      assert redirected_to(conn) == ~p"/users/settings"
+      conn = get(conn, ~p"/app/users/settings/confirm_email/oops")
+      assert redirected_to(conn) == ~p"/app/users/settings"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
                "Email change link is invalid or it has expired"
@@ -138,8 +138,8 @@ defmodule SetilWeb.UserSettingsControllerTest do
 
     test "redirects if user is not logged in", %{token: token} do
       conn = build_conn()
-      conn = get(conn, ~p"/users/settings/confirm_email/#{token}")
-      assert redirected_to(conn) == ~p"/users/log_in"
+      conn = get(conn, ~p"/app/users/settings/confirm_email/#{token}")
+      assert redirected_to(conn) == ~p"/app/users/log_in"
     end
   end
 end

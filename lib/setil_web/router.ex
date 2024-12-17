@@ -53,7 +53,7 @@ defmodule SetilWeb.Router do
 
   ## Authentication routes
 
-  scope "/", SetilWeb do
+  scope "/app", SetilWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     get "/users/register", UserRegistrationController, :new
@@ -66,7 +66,7 @@ defmodule SetilWeb.Router do
     put "/users/reset_password/:token", UserResetPasswordController, :update
   end
 
-  scope "/", SetilWeb do
+  scope "/app", SetilWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     get "/users/settings", UserSettingsController, :edit
@@ -74,7 +74,7 @@ defmodule SetilWeb.Router do
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
   end
 
-  scope "/", SetilWeb do
+  scope "/app", SetilWeb do
     pipe_through [:browser]
 
     delete "/users/log_out", UserSessionController, :delete

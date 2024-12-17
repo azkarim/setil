@@ -16,7 +16,7 @@
       :let={f}
       for={@conn.params["user"]}
       as={:user}
-      action={~p"/users/reset_password"}
+      action={~p"/app/users/reset_password"}
     >
       <.input field={f[:email]} type="email" placeholder="Email" required />
       <:actions>

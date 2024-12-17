@@ -21,12 +21,20 @@
           <span class="text-4xl font-black">Welcome back!</span>
           <:subtitle>
             Don't have an account?
-            <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
+            <.link
+              navigate={~p"/app/users/register"}
+              class="font-semibold text-brand hover:underline"
+            >
               <span class="underline">Sign up</span>
             </.link>
           </:subtitle>
         </.header>
-        <.simple_form :let={f} for={@conn.params["user"]} as={:user} action={~p"/users/log_in"}>
+        <.simple_form
+          :let={f}
+          for={@conn.params["user"]}
+          as={:user}
+          action={~p"/app/users/log_in"}
+        >
           <.error :if={@error_message}><%= @error_message %></.error>
 
           <.input field={f[:email]} type="email" label="Email" required />
@@ -35,7 +43,7 @@
           <:actions :let={f}>
             <div class="w-full flex justify-between items-start">
               <.input field={f[:remember_me]} type="checkbox" label="Keep me logged in" />
-              <.link href={~p"/users/reset_password"} class="text-sm font-semibold">
+              <.link href={~p"/app/users/reset_password"} class="text-sm font-semibold">
                 <span class="underline">Forgot your password?</span>
               </.link>
             </div>
