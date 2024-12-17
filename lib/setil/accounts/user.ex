@@ -4,6 +4,7 @@ defmodule Setil.Accounts.User do
 
   schema "users" do
     field :email, :string
+    field :preferred_name, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
@@ -37,9 +38,10 @@ defmodule Setil.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :preferred_name])
     |> validate_email(opts)
     |> validate_password(opts)
+    |> validate_preferred_name()
   end
 
   defp validate_email(changeset, opts) do
@@ -59,6 +61,11 @@ defmodule Setil.Accounts.User do
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
     |> maybe_hash_password(opts)
+  end
+
+  defp validate_preferred_name(changeset) do
+    changeset
+    |> validate_length(:preferred_name, min: 1, max: 50)
   end
 
   defp maybe_hash_password(changeset, opts) do
