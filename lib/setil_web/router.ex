@@ -24,8 +24,9 @@ defmodule SetilWeb.Router do
   end
 
   scope "/app", SetilWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_user]
 
+    live "/", AppHomeLive
     live "/match-heading", MatchHeadingLive
   end
 
