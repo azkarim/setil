@@ -14,7 +14,7 @@ defmodule SetilWeb.AppHomeLive do
   end
 
   def handle_event("goto-logout", _unsigned_params, socket) do
-    {:noreply, assign(socket, show_account_dropdown: false)}
+    {:noreply, socket}
   end
 
   def handle_event("close-account-dropdown", _unsigned_params, socket) do
@@ -32,12 +32,25 @@ defmodule SetilWeb.AppHomeLive do
   attr :phx_click, :string, required: true
 
   def account_dropdown_item(assigns) do
-    ~H"""
-    <div class="flex items-center px-2 py-2 gap-2 text-gray-700 hover:bg-gray-100 border-2 border-gray-900 shadow-lg shadow-sm-brutal hover:translate-x-1 hover:translate-y-1 transition-all cursor-pointer">
-      <.icon name={@icon} class="h-5 w-5" />
+    assigns =
+      assign(
+        assigns,
+        :item_class,
+        "flex items-center px-2 py-2 gap-2 text-gray-700 hover:bg-gray-100 border-2 border-gray-900 shadow-lg shadow-sm-brutal hover:translate-x-1 hover:translate-y-1 transition-all cursor-pointer"
+      )
 
-      <button phx-click={@phx_click}><%= @label %></button>
-    </div>
+    ~H"""
+    <%= if @phx_click == "goto-logout" do %>
+      <.link href={~p"/app/users/log_out"} method="delete" class={@item_class}>
+        <.icon name={@icon} class="h-5 w-5" />
+        <span><%= @label %></span>
+      </.link>
+    <% else %>
+      <div class={@item_class}>
+        <.icon name={@icon} class="h-5 w-5" />
+        <button phx-click={@phx_click}><%= @label %></button>
+      </div>
+    <% end %>
     """
   end
 end
