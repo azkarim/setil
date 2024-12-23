@@ -54,7 +54,7 @@ defmodule SetilWeb.Router do
 
   ## Authentication routes
 
-  scope "/", SetilWeb do
+  scope "/app", SetilWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     live_session :redirect_if_user_is_authenticated,
@@ -68,7 +68,7 @@ defmodule SetilWeb.Router do
     post "/users/log_in", UserSessionController, :create
   end
 
-  scope "/", SetilWeb do
+  scope "/app", SetilWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
@@ -78,7 +78,7 @@ defmodule SetilWeb.Router do
     end
   end
 
-  scope "/", SetilWeb do
+  scope "/app", SetilWeb do
     pipe_through [:browser]
 
     delete "/users/log_out", UserSessionController, :delete
