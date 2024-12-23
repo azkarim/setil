@@ -18,7 +18,7 @@ defmodule SetilWeb.MatchHeadingLive do
      |> assign(initial_state())}
   end
 
-  def handle_event("select_option", %{"option" => selected_option}, socket) do
+  def handle_event("select-option", %{"option" => selected_option}, socket) do
     {:noreply,
      socket
      |> assign(:selected_option, selected_option)

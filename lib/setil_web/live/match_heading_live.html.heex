@@ -84,7 +84,7 @@
           <%= for option <- @response.options do %>
             <button
               class={"w-full p-4 text-left text-sm border-2 border-black transition-all #{class_when_option_selected(@selected_option, option, @response.answer)}"}
-              phx-click="select_option"
+              phx-click="select-option"
               phx-value-option={option}
             >
               <%= option %>
