@@ -49,9 +49,8 @@ defmodule SetilWeb.MatchHeadingLive do
 
   def handle_event("next-passage", _params, socket) do
     parent = self()
-    # TODO : Process may become zombie and currently
-    # there is no way to detect that and kill it!
-    spawn(fn ->
+
+    Task.start(fn ->
       fetch_passage(parent, socket.assigns.theme, socket.assigns.words, socket.assigns.difficulty)
     end)
 
