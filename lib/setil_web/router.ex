@@ -32,6 +32,9 @@ defmodule SetilWeb.Router do
       on_mount: [{SetilWeb.UserAuth, :ensure_authenticated}] do
       live "/", HomeLive
 
+      live "/settings", SettingsLive, :edit
+      live "/settings/confirm_email/:token", SettingsLive, :confirm_email
+
       scope "/reading", Reading do
         live "/match-heading", MatchHeadingLive
       end
@@ -74,16 +77,6 @@ defmodule SetilWeb.Router do
     end
 
     post "/log_in", UserSessionController, :create
-  end
-
-  scope "/app", SetilWeb.App do
-    pipe_through [:browser, :require_authenticated_user]
-
-    live_session :require_authenticated_user,
-      on_mount: [{SetilWeb.UserAuth, :ensure_authenticated}] do
-      live "/settings", SettingsLive, :edit
-      live "/settings/confirm_email/:token", SettingsLive, :confirm_email
-    end
   end
 
   scope "/users", SetilWeb do

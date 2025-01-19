@@ -1,6 +1,7 @@
 defmodule SetilWeb.App.Layout do
   use SetilWeb, :html
   use SetilWeb, :live_view
+  alias SetilWeb.App.Components.SidebarComponent
 
   @impl true
   def mount(_params, _session, socket) do
@@ -49,8 +50,10 @@ defmodule SetilWeb.App.Layout do
       <body class="font-mono antialiased">
         <div class="bg-gray-50 min-h-screen min-w-screen flex">
           <.flash_group flash={@flash} />
-          <div class="w-16 border"></div>
-          <div class="max-w-6xl">
+          <div class="w-16 border flex items-end justify-center h-screen fixed">
+            <.live_component module={SidebarComponent} id="sidebar" />
+          </div>
+          <div class="ml-16 px-12 py-12 w-full">
             <%= @inner_content %>
           </div>
         </div>
