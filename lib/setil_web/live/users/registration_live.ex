@@ -1,4 +1,4 @@
-defmodule SetilWeb.App.Users.RegistrationLive do
+defmodule SetilWeb.Users.RegistrationLive do
   use SetilWeb, :live_view
 
   alias Setil.Accounts
@@ -31,7 +31,7 @@ defmodule SetilWeb.App.Users.RegistrationLive do
               <span class="text-4xl font-black">Register an account</span>
               <:subtitle>
                 Already registered?
-                <.link navigate={~p"/app/users/log_in"} class="font-semibold text-brand">
+                <.link navigate={~p"/users/log_in"} class="font-semibold text-brand">
                   <span class="underline">Log in</span>
                 </.link>
                 to your account now.
@@ -44,7 +44,7 @@ defmodule SetilWeb.App.Users.RegistrationLive do
               phx-submit="save"
               phx-change="validate"
               phx-trigger-action={@trigger_submit}
-              action={~p"/app/users/log_in?_action=registered"}
+              action={~p"/users/log_in?_action=registered"}
               method="post"
             >
               <.error :if={@check_errors}>
@@ -86,7 +86,7 @@ defmodule SetilWeb.App.Users.RegistrationLive do
         {:ok, _} =
           Accounts.deliver_user_confirmation_instructions(
             user,
-            &url(~p"/app/users/confirm/#{&1}")
+            &url(~p"/users/confirm/#{&1}")
           )
 
         changeset = Accounts.change_user_registration(user)

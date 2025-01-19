@@ -13,7 +13,7 @@ defmodule SetilWeb.App.HomeLive do
     {:noreply,
      socket
      |> assign(show_account_dropdown: false)
-     |> push_navigate(to: ~p"/app/users/settings")}
+     |> push_navigate(to: ~p"/app/settings")}
   end
 
   def handle_event("goto-logout", _unsigned_params, socket) do
@@ -44,7 +44,7 @@ defmodule SetilWeb.App.HomeLive do
 
     ~H"""
     <%= if @phx_click == "goto-logout" do %>
-      <.link href={~p"/app/users/log_out"} method="delete" class={@item_class}>
+      <.link href={~p"/users/log_out"} method="delete" class={@item_class}>
         <.icon name={@icon} class="h-5 w-5" />
         <span><%= @label %></span>
       </.link>

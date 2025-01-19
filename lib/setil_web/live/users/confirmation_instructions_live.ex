@@ -1,4 +1,4 @@
-defmodule SetilWeb.App.Users.ConfirmationInstructionsLive do
+defmodule SetilWeb.Users.ConfirmationInstructionsLive do
   use SetilWeb, :live_view
 
   alias Setil.Accounts
@@ -21,8 +21,8 @@ defmodule SetilWeb.App.Users.ConfirmationInstructionsLive do
       </.simple_form>
 
       <p class="text-center mt-4">
-        <.link href={~p"/app/users/register"}>Register</.link>
-        | <.link href={~p"/app/users/log_in"}>Log in</.link>
+        <.link href={~p"/users/register"}>Register</.link>
+        | <.link href={~p"/users/log_in"}>Log in</.link>
       </p>
     </div>
     """
@@ -36,7 +36,7 @@ defmodule SetilWeb.App.Users.ConfirmationInstructionsLive do
     if user = Accounts.get_user_by_email(email) do
       Accounts.deliver_user_confirmation_instructions(
         user,
-        &url(~p"/app/users/confirm/#{&1}")
+        &url(~p"/users/confirm/#{&1}")
       )
     end
 

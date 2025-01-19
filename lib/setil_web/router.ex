@@ -57,43 +57,39 @@ defmodule SetilWeb.Router do
 
   ## Authentication routes
 
-  scope "/app", SetilWeb do
+  scope "/users", SetilWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    scope "/users", App.Users do
-      live_session :redirect_if_user_is_authenticated,
-        on_mount: [{SetilWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-        live "/register", RegistrationLive, :new
-        live "/log_in", LoginLive, :new
-        live "/reset_password", ForgotPasswordLive, :new
-        live "/reset_password/:token", ResetPasswordLive, :edit
-      end
+    live_session :redirect_if_user_is_authenticated,
+      on_mount: [{SetilWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      live "/register", Users.RegistrationLive, :new
+      live "/log_in", Users.LoginLive, :new
+      live "/reset_password", Users.ForgotPasswordLive, :new
+      live "/reset_password/:token", Users.ResetPasswordLive, :edit
     end
 
-    post "/users/log_in", UserSessionController, :create
+    post "/log_in", UserSessionController, :create
   end
 
   scope "/app", SetilWeb.App do
     pipe_through [:browser, :require_authenticated_user]
 
-    scope "/users", Users do
-      live_session :require_authenticated_user,
-        on_mount: [{SetilWeb.UserAuth, :ensure_authenticated}] do
-        live "/settings", SettingsLive, :edit
-        live "/settings/confirm_email/:token", SettingsLive, :confirm_email
-      end
+    live_session :require_authenticated_user,
+      on_mount: [{SetilWeb.UserAuth, :ensure_authenticated}] do
+      live "/settings", SettingsLive, :edit
+      live "/settings/confirm_email/:token", SettingsLive, :confirm_email
     end
   end
 
-  scope "/app", SetilWeb do
+  scope "/users", SetilWeb do
     pipe_through [:browser]
 
-    delete "/users/log_out", UserSessionController, :delete
+    delete "/log_out", UserSessionController, :delete
 
     live_session :current_user,
       on_mount: [{SetilWeb.UserAuth, :mount_current_user}] do
-      live "/users/confirm/:token", App.Users.ConfirmationLive, :edit
-      live "/users/confirm", App.Users.ConfirmationInstructionsLive, :new
+      live "/confirm/:token", Users.ConfirmationLive, :edit
+      live "/confirm", Users.ConfirmationInstructionsLive, :new
     end
   end
 end

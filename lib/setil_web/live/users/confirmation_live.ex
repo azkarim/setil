@@ -1,4 +1,4 @@
-defmodule SetilWeb.App.Users.ConfirmationLive do
+defmodule SetilWeb.Users.ConfirmationLive do
   use SetilWeb, :live_view
 
   alias Setil.Accounts
@@ -16,8 +16,8 @@ defmodule SetilWeb.App.Users.ConfirmationLive do
       </.simple_form>
 
       <p class="text-center mt-4">
-        <.link href={~p"/app/users/register"}>Register</.link>
-        | <.link href={~p"/app/users/log_in"}>Log in</.link>
+        <.link href={~p"/users/register"}>Register</.link>
+        | <.link href={~p"/users/log_in"}>Log in</.link>
       </p>
     </div>
     """

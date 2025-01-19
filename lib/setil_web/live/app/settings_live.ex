@@ -1,4 +1,4 @@
-defmodule SetilWeb.App.Users.SettingsLive do
+defmodule SetilWeb.App.SettingsLive do
   use SetilWeb, :live_view
 
   alias Setil.Accounts
@@ -37,7 +37,7 @@ defmodule SetilWeb.App.Users.SettingsLive do
         <.simple_form
           for={@password_form}
           id="password_form"
-          action={~p"/app/users/log_in?_action=password_updated"}
+          action={~p"/users/log_in?_action=password_updated"}
           method="post"
           phx-change="validate_password"
           phx-submit="update_password"
@@ -83,7 +83,7 @@ defmodule SetilWeb.App.Users.SettingsLive do
           put_flash(socket, :error, "Email change link is invalid or it has expired.")
       end
 
-    {:ok, push_navigate(socket, to: ~p"/app/users/settings")}
+    {:ok, push_navigate(socket, to: ~p"/app/settings")}
   end
 
   def mount(_params, _session, socket) do
@@ -124,7 +124,7 @@ defmodule SetilWeb.App.Users.SettingsLive do
         Accounts.deliver_user_update_email_instructions(
           applied_user,
           user.email,
-          &url(~p"/app/users/settings/confirm_email/#{&1}")
+          &url(~p"/app/settings/confirm_email/#{&1}")
         )
 
         info = "A link to confirm your email change has been sent to the new address."
