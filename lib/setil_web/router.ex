@@ -28,7 +28,7 @@ defmodule SetilWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :app,
-      root_layout: {Layout, :render},
+      layout: {Layout, :render},
       on_mount: [{SetilWeb.UserAuth, :ensure_authenticated}] do
       live "/", HomeLive
 

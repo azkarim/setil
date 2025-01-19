@@ -47,8 +47,13 @@ defmodule SetilWeb.App.Layout do
         </script>
       </head>
       <body class="font-mono antialiased">
-        <.flash_group flash={@flash} />
-        <%= @inner_content %>
+        <div class="bg-gray-50 min-h-screen min-w-screen flex">
+          <.flash_group flash={@flash} />
+          <div class="w-16 border"></div>
+          <div class="max-w-6xl">
+            <%= @inner_content %>
+          </div>
+        </div>
       </body>
     </html>
     """
