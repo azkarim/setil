@@ -1,4 +1,5 @@
 defmodule SetilWeb.Router do
+  alias SetilWeb.App.Layout
   use SetilWeb, :router
 
   import SetilWeb.UserAuth
@@ -26,10 +27,14 @@ defmodule SetilWeb.Router do
   scope "/app", SetilWeb.App do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/", HomeLive
+    live_session :app,
+      root_layout: {Layout, :render},
+      on_mount: [{SetilWeb.UserAuth, :ensure_authenticated}] do
+      live "/", HomeLive
 
-    scope "/reading", Reading do
-      live "/match-heading", MatchHeadingLive
+      scope "/reading", Reading do
+        live "/match-heading", MatchHeadingLive
+      end
     end
   end
 
