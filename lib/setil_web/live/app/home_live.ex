@@ -10,7 +10,10 @@ defmodule SetilWeb.App.HomeLive do
   end
 
   def handle_event("goto-profile", _unsigned_params, socket) do
-    {:noreply, assign(socket, show_account_dropdown: false)}
+    {:noreply,
+     socket
+     |> assign(show_account_dropdown: false)
+     |> push_navigate(to: ~p"/app/users/settings")}
   end
 
   def handle_event("goto-logout", _unsigned_params, socket) do
