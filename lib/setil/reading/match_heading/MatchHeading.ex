@@ -1,4 +1,4 @@
-defmodule Setil.Questions.MatchHeading do
+defmodule Setil.Reading.MatchHeading do
   @type t :: %__MODULE__{
           passage: list(String.t()) | nil,
           options: list(String.t()) | nil,

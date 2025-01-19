@@ -1,5 +1,5 @@
-defmodule Setil.Questions.MatchHeading.Prompt do
-  alias Setil.Questions.MatchHeading.Response
+defmodule Setil.Reading.MatchHeading.Prompt do
+  alias Setil.Reading.MatchHeading.Response
 
   @default_no_of_options 3
 

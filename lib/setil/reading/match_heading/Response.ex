@@ -1,4 +1,4 @@
-defmodule Setil.Questions.MatchHeading.Response do
+defmodule Setil.Reading.MatchHeading.Response do
   use Ecto.Schema
   use Instructor.Validator
   import Ecto.Changeset

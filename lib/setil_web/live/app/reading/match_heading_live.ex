@@ -2,8 +2,8 @@ defmodule SetilWeb.App.Reading.MatchHeadingLive do
   use SetilWeb, :live_view
   import Phoenix.Component
 
-  alias Setil.Questions.MatchHeading.Prompt
-  alias Setil.Questions.MatchHeading.Response
+  alias Setil.Reading.MatchHeading.Prompt
+  alias Setil.Reading.MatchHeading.Response
 
   @default_words 350
   @default_difficulty_level 10
