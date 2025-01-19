@@ -1,4 +1,4 @@
-defmodule SetilWeb.AppHomeLive do
+defmodule SetilWeb.App.HomeLive do
   use SetilWeb, :live_view
 
   def mount(_params, session, socket) do

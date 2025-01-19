@@ -1,4 +1,4 @@
-defmodule SetilWeb.MatchHeadingLive do
+defmodule SetilWeb.App.Reading.MatchHeadingLive do
   use SetilWeb, :live_view
   import Phoenix.Component
 

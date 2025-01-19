@@ -1,4 +1,4 @@
-defmodule SetilWeb.UserLoginLive do
+defmodule SetilWeb.App.Users.LoginLive do
   use SetilWeb, :live_view
 
   def render(assigns) do

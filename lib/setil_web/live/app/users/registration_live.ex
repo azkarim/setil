@@ -1,4 +1,4 @@
-defmodule SetilWeb.UserRegistrationLive do
+defmodule SetilWeb.App.Users.RegistrationLive do
   use SetilWeb, :live_view
 
   alias Setil.Accounts

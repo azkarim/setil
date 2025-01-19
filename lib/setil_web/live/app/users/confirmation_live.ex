@@ -1,4 +1,4 @@
-defmodule SetilWeb.UserConfirmationLive do
+defmodule SetilWeb.App.Users.ConfirmationLive do
   use SetilWeb, :live_view
 
   alias Setil.Accounts

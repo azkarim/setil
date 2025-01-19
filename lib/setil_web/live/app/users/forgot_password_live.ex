@@ -1,4 +1,4 @@
-defmodule SetilWeb.UserForgotPasswordLive do
+defmodule SetilWeb.App.Users.ForgotPasswordLive do
   use SetilWeb, :live_view
 
   alias Setil.Accounts
