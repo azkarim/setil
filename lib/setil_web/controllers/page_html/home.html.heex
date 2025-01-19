@@ -14,7 +14,8 @@
           SETIL
         </.link>
         <div class="flex gap-8">
-          <ul class="flex gap-8 items-center" aria-label="Site navigation">
+          <!-- Home, About links -->
+          <%!-- <ul class="flex gap-8 items-center" aria-label="Site navigation">
             <%= for {item, url} <- [{"Home", ~p"/"}, {"About", ~p"/"} ] do %>
               <li>
                 <.link
@@ -26,7 +27,7 @@
                 </.link>
               </li>
             <% end %>
-          </ul>
+          </ul> --%>
           <ul class="flex gap-4" aria-label="User authentication">
             <li>
               <.link
