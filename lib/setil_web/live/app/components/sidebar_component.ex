@@ -25,6 +25,7 @@ defmodule SetilWeb.App.Components.SidebarComponent do
   end
 
   # Components
+  attr :type, :atom, required: true, values: [:button, :link]
   attr :label, :string, required: true
   attr :icon, :string, required: true
   attr :phx_click, :string, required: true
@@ -39,18 +40,19 @@ defmodule SetilWeb.App.Components.SidebarComponent do
       )
 
     ~H"""
-    <%= if @phx_click == "goto-logout" do %>
-      <.link href={~p"/users/log_out"} method="delete" class={@item_class}>
-        <.icon name={@icon} class="h-5 w-5" />
-        <span><%= @label %></span>
-      </.link>
-    <% else %>
-      <button phx-click={@phx_click} phx-target={@myself} class="w-full">
-        <div class={[@item_class, "w-full"]}>
+    <%= case @type do %>
+      <% :button -> %>
+        <button phx-click={@phx_click} phx-target={@myself} class="w-full">
+          <div class={[@item_class, "w-full"]}>
+            <.icon name={@icon} class="h-5 w-5" />
+            <%= @label %>
+          </div>
+        </button>
+      <% :link -> %>
+        <.link href={~p"/users/log_out"} method="delete" class={@item_class}>
           <.icon name={@icon} class="h-5 w-5" />
-          <%= @label %>
-        </div>
-      </button>
+          <span><%= @label %></span>
+        </.link>
     <% end %>
     """
   end
@@ -81,8 +83,14 @@ defmodule SetilWeb.App.Components.SidebarComponent do
           phx-click-away="close-account-dropdown"
           phx-target={@myself}
         >
-          <%= for {label, icon, phx_click} <- [{"Profile", "hero-user", "goto-profile"}, {"Logout", "hero-arrow-right-start-on-rectangle", "goto-logout"}] do %>
-            <.account_dropdown_item label={label} icon={icon} phx_click={phx_click} myself={@myself} />
+          <%= for {type, label, icon, phx_click} <- [{:button, "Profile", "hero-user", "goto-profile"}, {:link, "Logout", "hero-arrow-right-start-on-rectangle", "goto-logout"}] do %>
+            <.account_dropdown_item
+              type={type}
+              label={label}
+              icon={icon}
+              phx_click={phx_click}
+              myself={@myself}
+            />
           <% end %>
         </div>
       </div>
