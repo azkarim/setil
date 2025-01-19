@@ -11,6 +11,11 @@ config :setil,
   ecto_repos: [Setil.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :setil, Rumbl.Repo, hostname: "localhost"
+
+config :instructor,
+  adapter: Instructor.Adapters.OpenAI
+
 # Configures the endpoint
 config :setil, SetilWeb.Endpoint,
   url: [host: "localhost"],

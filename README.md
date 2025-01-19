@@ -1,5 +1,26 @@
 # Setil
 
+## Config
+
+Create a file `secrets.dev.exs` in `config/` directory.
+
+`touch config/secrets.dev.exs`
+
+```elixir
+import Config
+
+config :setil, Rumbl.Repo,
+  username: $POSTGRES_USERNAME,
+  password: $POSTGRES_PASS
+
+config :instructor,
+  openai: [
+    api_key: $OPENAI_API_KEY
+  ]
+```
+
+## Start
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
