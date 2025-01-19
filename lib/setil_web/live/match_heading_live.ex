@@ -50,9 +50,12 @@ defmodule SetilWeb.MatchHeadingLive do
   def handle_event("next-passage", _params, socket) do
     parent = self()
 
-    Task.start(fn ->
-      fetch_passage(parent, socket.assigns.theme, socket.assigns.words, socket.assigns.difficulty)
-    end)
+    spawn_fetch_passage(
+      parent,
+      socket.assigns.theme,
+      socket.assigns.words,
+      socket.assigns.difficulty
+    )
 
     {:noreply,
      socket
@@ -89,6 +92,12 @@ defmodule SetilWeb.MatchHeadingLive do
 
   defp default_prompt_config() do
     %{words: @default_words, difficulty: @default_difficulty_level, theme: nil}
+  end
+
+  defp spawn_fetch_passage(parent, theme, words, difficulty) do
+    Task.start(fn ->
+      fetch_passage(parent, theme, words, difficulty)
+    end)
   end
 
   defp fetch_passage(parent, theme, words, difficulty) do
