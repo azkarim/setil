@@ -5,7 +5,6 @@ defmodule SetilWeb.PageHTML do
   See the `page_html` directory for all templates available.
   """
   use SetilWeb, :html
-  use Phoenix.Component
 
   embed_templates "page_html/*"
 
