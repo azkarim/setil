@@ -62,7 +62,7 @@ defmodule SetilWeb.App.Components.SidebarComponent do
     <div class="w-16 h-full py-12 flex flex-col items-center justify-between" id={@id}>
       <div>
         <.link
-          href={~p"/app/"}
+          navigate={~p"/app/"}
           class="h-10 w-10 bg-white rounded-full border-2 border-gray-900 flex items-center justify-center hover:-translate-y-0.5 transition-transform cursor-pointer shadow-sm-brutal"
         >
           <.icon name="hero-home-solid" class="h-5 w-5" />
