@@ -1,10 +1,10 @@
 defmodule SetilWeb.App.Components.SidebarComponent do
-  use SetilWeb, :live_component
+  use SetilWeb, :html
   alias Phoenix.LiveView.JS
 
-  def render(assigns) do
+  def sidebar(assigns) do
     ~H"""
-    <div class="w-16 h-full py-12 flex flex-col items-center justify-between" id={@id}>
+    <div class="w-16 h-full py-12 flex flex-col items-center justify-between">
       <div>
         <.link
           navigate={~p"/app/"}
@@ -43,7 +43,7 @@ defmodule SetilWeb.App.Components.SidebarComponent do
     """
   end
 
-  def toggle_account_dropdown_menu do
+  defp toggle_account_dropdown_menu do
     JS.toggle(to: "#account_dropdown_menu")
   end
 end
