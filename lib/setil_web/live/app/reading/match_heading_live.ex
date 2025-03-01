@@ -13,9 +13,19 @@ defmodule SetilWeb.App.Reading.MatchHeadingLive do
   # UI state is not definded when it fails on its first attempt.
 
   def mount(_params, _session, socket) do
+    state = initial_state()
+    parent = self()
+
+    spawn_fetch_passage(
+      parent,
+      state.theme,
+      state.words,
+      state.difficulty
+    )
+
     {:ok,
      socket
-     |> assign(initial_state())}
+     |> assign(state)}
   end
 
   def handle_event("select-option", %{"option" => selected_option}, socket) do
@@ -86,7 +96,7 @@ defmodule SetilWeb.App.Reading.MatchHeadingLive do
       # response is a Prompt %Response{} as map rather struct.
       response: nil,
       selected_option: nil,
-      loading: false
+      loading: true
     })
   end
 
