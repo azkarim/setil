@@ -29,13 +29,7 @@
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
 
-    <%= if String.starts_with?(@conn.request_path, "/app/") do %>
-      <script
-        defer
-        src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
-      >
-      </script>
-    <% end %>
+    <%= include_app_route_js(assigns) %>
   </head>
   <body class="font-mono antialiased">
     <%= @inner_content %>

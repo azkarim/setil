@@ -15,4 +15,20 @@ defmodule SetilWeb.Layouts do
   def app_path?(conn) do
     String.starts_with?(conn.request_path, "/app")
   end
+
+  def include_app_route_js(assigns) do
+    path = assigns.conn.request_path
+
+    if String.starts_with?(path, "/app/") do
+      ~H"""
+      <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"
+      >
+      </script>
+      """
+    else
+      ~H""
+    end
+  end
 end
