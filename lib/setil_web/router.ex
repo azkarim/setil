@@ -37,6 +37,7 @@ defmodule SetilWeb.Router do
 
       scope "/reading", Reading do
         live "/match-heading", MatchHeadingLive
+        live "/true-false-not-given", TrueFalseNotGivenLive
       end
     end
   end
