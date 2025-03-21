@@ -4,6 +4,7 @@ defmodule SetilWeb.App.Reading.MatchHeadingLive do
 
   alias Setil.Reading.MatchHeading.Prompt
   alias Setil.Reading.MatchHeading.Response
+  import SetilWeb.App.Components.RangeStepSlider
 
   @default_words 350
   @default_difficulty_level 10
